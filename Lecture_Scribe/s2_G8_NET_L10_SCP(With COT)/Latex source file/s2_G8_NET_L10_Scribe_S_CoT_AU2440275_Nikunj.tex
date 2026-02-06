@@ -1,0 +1,322 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{setspace}
+
+\setstretch{1.1}
+
+\title{\textbf{CSE400 -- Fundamentals of Probability in Computing} \\[0.5em]
+\large Lecture 10: Randomized Min-Cut Algorithm}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\vspace{-1em}
+
+\noindent
+\textbf{Source:} Lecture 10 slides
+
+\bigskip
+
+\noindent
+This document is a \textbf{strict, exam-ready lecture scribe for Lecture 10}, written \textbf{only from the provided lecture slides}.  
+All definitions, notation, statements, algorithms, and explanations follow the \textbf{exact lecture flow and reasoning}, and it is intended to serve as a \textbf{sole reference for a closed-notes exam}.
+
+%-------------------------------------------------
+
+\section{Min-Cut Problem}
+
+\subsection{Why Use Min-Cut?}
+
+The min-cut problem is studied because it is useful for solving problems related to:
+
+\begin{itemize}
+    \item \textbf{Network connectivity}
+    \item \textbf{Network reliability}
+    \item \textbf{Optimization}
+\end{itemize}
+
+The lecture motivates min-cut through the following applications:
+
+\begin{enumerate}
+    \item \textbf{Network Design} \\
+    Min-cut helps improve communication efficiency and optimize network flow.  
+    By finding the \textbf{minimum capacity cut}, bottlenecks in the network can be identified.
+
+    \item \textbf{Communication Networks} \\
+    Min-cut is useful for understanding the \textbf{vulnerability of networks to failures}.  
+    It helps in building \textbf{robust and fault-tolerant communication networks}.
+
+    \item \textbf{VLSI Design} \\
+    In \textbf{Very Large Scale Integration (VLSI)} design, min-cut algorithms help in \textbf{partitioning circuits} into smaller components, reducing \textbf{interconnectivity complexity}.
+\end{enumerate}
+
+%-------------------------------------------------
+
+\section{What Is Min-Cut?}
+
+\subsection{Cut-Set}
+
+\textbf{Definition (Cut-Set):} \\
+A \textbf{cut-set} in a graph is a set of edges whose removal breaks the graph into \textbf{two or more connected components}.
+
+\medskip
+\textbf{Reasoning:} \\
+Edges in a cut-set are essential for connectivity. Removing them disconnects the graph, allowing us to study the weakest points of the network.
+
+\subsection{Minimum Cut}
+
+Given a graph
+\[
+G = (V, E)
+\]
+with $n$ vertices, the \textbf{minimum cut (min-cut) problem} is defined as:
+
+\begin{quote}
+To find a \textbf{minimum cardinality cut-set} in $G$.
+\end{quote}
+
+\noindent
+\textbf{Explanation:} \\
+Among all cut-sets, the one with the \textbf{smallest number of edges} is preferred, as it represents the smallest disconnection of the graph.
+
+\subsection{Sensitivity of Min-Cut Algorithms}
+
+Min-cut algorithms such as \textbf{Karger’s algorithm} are \textbf{randomized} and can be \textbf{sensitive to the initial choice of edges}.
+
+\begin{itemize}
+    \item Contracting \textbf{critical edges early} may destroy the true minimum cut.
+    \item This explains why one execution may succeed while another may fail.
+\end{itemize}
+
+%-------------------------------------------------
+
+\section{Edge Contraction}
+
+\subsection{Main Operation}
+
+The \textbf{main operation} in the min-cut algorithm is \textbf{edge contraction}.
+
+\medskip
+\textbf{Definition (Edge Contraction):} \\
+Edge contraction removes an edge while \textbf{merging its two endpoint vertices} into one.
+
+\subsection{Contracting an Edge}
+
+When contracting an edge $(u, v)$:
+
+\begin{enumerate}
+    \item Vertices $u$ and $v$ are \textbf{merged into one vertex}.
+    \item All edges between $u$ and $v$ are \textbf{eliminated}.
+    \item All other edges are \textbf{retained}.
+    \item The resulting graph:
+    \begin{itemize}
+        \item May contain \textbf{parallel edges}
+        \item Contains \textbf{no self-loops}
+    \end{itemize}
+\end{enumerate}
+
+\noindent
+\textbf{Reasoning:} \\
+Edge contraction reduces graph size while preserving information about possible cuts.
+
+%-------------------------------------------------
+
+\section{Successful and Unsuccessful Min-Cut Runs}
+
+\subsection{Successful Min-Cut Run}
+
+A \textbf{successful min-cut run} is one in which:
+
+\begin{quote}
+The algorithm correctly finds the \textbf{minimum cut} of the graph.
+\end{quote}
+
+\noindent
+This occurs when edges belonging to the minimum cut are not contracted prematurely.
+
+\subsection{Unsuccessful Min-Cut Run}
+
+An \textbf{unsuccessful min-cut run} occurs when:
+
+\begin{quote}
+An edge in the true minimum cut is contracted early, leading to an incorrect result.
+\end{quote}
+
+\noindent
+The structure of the minimum cut is destroyed due to early contraction.
+
+%-------------------------------------------------
+
+\section{Max-Flow Min-Cut Theorem}
+
+\subsection{Theorem Statement}
+
+\textbf{Max-Flow Min-Cut Theorem:}
+
+\begin{quote}
+In a flow network, the maximum flow from the source to the sink equals the total weight of the edges in a minimum cut.
+\end{quote}
+
+\subsection{Definitions}
+
+\begin{itemize}
+    \item \textbf{Capacity of a cut}: Sum of capacities of edges directed from set $X$ to set $Y$
+    \item \textbf{Minimum cut}: Cut with the smallest capacity
+    \item \textbf{Minimum cut capacity}: Capacity value of the minimum cut
+    \item \textbf{Maximum flow}: Largest possible flow from source $S$ to sink $T$
+\end{itemize}
+
+\noindent
+\textbf{Reasoning:} \\
+The maximum achievable flow is exactly bounded by the smallest cut separating $S$ and $T$.
+
+%-------------------------------------------------
+
+\section{Deterministic Min-Cut Algorithm}
+
+\subsection{Stoer--Wagner Min-Cut Algorithm}
+
+Let $s$ and $t$ be vertices of a graph $G$.  
+Let $G/\{s,t\}$ be the graph formed by merging $s$ and $t$.
+
+\medskip
+A minimum cut of $G$ is the smaller of:
+\begin{itemize}
+    \item A minimum $s$--$t$ cut of $G$
+    \item A minimum cut of $G/\{s,t\}$
+\end{itemize}
+
+\subsection{Reasoning}
+
+\begin{itemize}
+    \item If a minimum cut separates $s$ and $t$, then the $s$--$t$ cut is optimal.
+    \item Otherwise, merging $s$ and $t$ preserves the minimum cut.
+\end{itemize}
+
+\subsection*{Algorithm 1: \texttt{MinimumCutPhase$(G,a)$}}
+
+\begin{enumerate}
+    \item Initialize $A \leftarrow \{a\}$
+    \item While $A \neq V$:
+    \begin{itemize}
+        \item Add the most tightly connected vertex to $A$
+    \end{itemize}
+    \item Return the cut weight
+\end{enumerate}
+
+\subsection*{Algorithm 2: \texttt{MinimumCut$(G)$}}
+
+\begin{enumerate}
+    \item While $|V| \ge 1$:
+    \begin{itemize}
+        \item Choose any vertex $a \in V$
+        \item Run \texttt{MinimumCutPhase$(G,a)$}
+        \item Store the cut if it is lighter
+        \item Merge the last two added vertices
+    \end{itemize}
+    \item Return the minimum cut
+\end{enumerate}
+
+\noindent
+\textbf{Property:} This algorithm always produces the \textbf{exact minimum cut}.
+
+%-------------------------------------------------
+
+\section{Randomized Min-Cut Algorithm}
+
+\subsection{Why Randomized Algorithms?}
+
+Randomized algorithms offer:
+\begin{itemize}
+    \item Probabilistic guarantees
+    \item Improved efficiency
+    \item Parallelizability
+    \item Approximation guarantees
+    \item Avoidance of worst-case scenarios
+\end{itemize}
+
+\subsection{Karger’s Randomized Algorithm}
+
+\textbf{Idea:} Repeatedly select a random edge and contract it until only two vertices remain.
+
+\begin{itemize}
+    \item Remaining edges form a cut
+    \item Random choices may or may not preserve the minimum cut
+\end{itemize}
+
+\subsection*{Algorithm 3: \texttt{RECURSIVE-RANDOMIZED-MIN-CUT$(G,\alpha)$}}
+
+\textbf{Input:} Undirected multigraph $G$ with $n$ vertices, constant $\alpha > 0$ \\
+\textbf{Output:} A cut $C$
+
+\begin{enumerate}
+    \item If $n \le 3$, find min-cut by exhaustive search
+    \item Else:
+    \begin{itemize}
+        \item Repeat $\alpha$ times:
+        \item Apply $n - \dfrac{n}{\sqrt{\alpha}}$ random contractions
+        \item Recursively compute cut $C'$
+        \item Keep the smallest cut
+    \end{itemize}
+    \item Return $C$
+\end{enumerate}
+
+%-------------------------------------------------
+
+\section{Comparison: Deterministic vs Randomized Min-Cut}
+
+\subsection*{Deterministic Min-Cut}
+
+\begin{itemize}
+    \item Always exact
+    \item Higher time complexity
+    \item Complexity:
+    \[
+    O(VE + V^2 \log V)
+    \]
+\end{itemize}
+
+\subsection*{Randomized Min-Cut}
+
+\begin{itemize}
+    \item High-probability correctness
+    \item Complexity:
+    \[
+    O(V^2)
+    \]
+\end{itemize}
+
+%-------------------------------------------------
+
+\section{Probability of Success}
+
+The randomized min-cut algorithm outputs a minimum cut with probability at least:
+\[
+\frac{2}{n(n-1)}
+\]
+
+\noindent
+Repeating the algorithm increases the probability of success.
+
+%-------------------------------------------------
+
+\section{Python Simulation}
+
+Students are instructed to:
+\begin{itemize}
+    \item Open the \textbf{Campuswire post for Lecture 10}
+    \item Download the provided \texttt{.ipynb} file
+    \item Simulate the randomized min-cut algorithm
+\end{itemize}
+
+\bigskip
+\noindent
+\textbf{End of Lecture 10}
+
+\end{document}
