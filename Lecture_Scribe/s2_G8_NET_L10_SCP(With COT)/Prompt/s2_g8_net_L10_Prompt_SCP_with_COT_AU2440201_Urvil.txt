@@ -1,0 +1,83 @@
+1 Why You Are Doing This
+In this task, you will use a Large Language Model (ChatGPT 5.2 Model) to generate
+lecture scribes under a fixed prompting style assigned to your group. Each member
+of the group must follow the prompting style assigned to their respective group, but you
+will make the scribe individually. These scribes serve two purposes:
+1. Academic reference material suitable for preparing for a reading-based / closednotes exam
+2. It is the graded component of the course.
+In this activity, your freedom to prompt is intentionally constrained. The goal is to
+evaluate disciplined and reproducible use of AI, not creative expression.
+This activity does not evaluate:
+• creativity
+• personal writing style
+• maximum verbosity
+This activity evaluates:
+• precision in prompt formulation
+• faithfulness in following instructions
+2 What a Lecture Scribe Is (Purpose)
+A lecture scribe is a faithful, exam-ready reconstruction of what was taught in
+class, written so that a student can later rely on it as reference material while studying.
+A correct lecture scribe should allow a student to:
+• Recall definitions and notation
+• Reconstruct proofs and derivations
+• Follow example solutions step by step
+• Understand logical dependencies between concepts
+A lecture scribe should answer the question:
+“If I study only this document, can I reliably revise what was taught?”
+2.1 What This Implies for Content
+The scribe should include:
+• Definitions and notation
+• Assumptions and conditions
+1
+• Statements of theorems or results
+• Proofs or proof sketches, step by step
+• Worked examples, with intermediate steps
+• Clear logical flow between ideas
+2.2 What a Lecture Scribe Is NOT
+A lecture scribe is not:
+• A creative explanation
+• A simplified tutorial
+• A textbook rewrite
+• A solution manual for unseen problems
+• A place to add intuition not discussed in class
+Everything included must be traceable to the provided context.
+3 Context Rules (Applies to All Prompting Styles)
+3.1 What “Context” Means
+The context is the authoritative source material the model is allowed to use. For this
+activity, the context is fixed and common for all:
+• Lecture slides/lecture PDF
+• Textbook content which is relevant to the respective lecture.
+You must attach only these materials, period.
+3.2 What Is Allowed in the Context
+• Lecture slides or PDFs
+• Textbook content which is relevant to the respective lecture.
+• Proofs, derivations, and examples that appear in those materials
+3.3 What Is Not Allowed in the Context
+• Solved material not shown or discussed in lecture
+• Instructor annotations explaining how to write a scribe
+• Reference scribes or “ideal answers”
+• Writing guides disguised as content
+Important clarification: An example scribe is allowed only inside the prompt for
+one-shot prompting. Example scribes are never part of the context for the rest.
+4 What Every Prompt Must Communicate (All Styles)
+Regardless of prompting style, your prompt must clearly communicate that:
+• The output is a lecture scribe
+• The scribe is intended as exam reference material
+2
+• The model must:
+– prioritize correctness
+– include explicit reasoning when appropriate
+– follow the lecture’s structure and scope
+• The model must not invent content
+This is a purpose constraint, not a template.
+5 Global Rules About Prompting Styles
+1. Your group is assigned one prompting style for the entire semester.
+2. You may refine how you use that style, but you may not switch styles.
+3. You may not borrow elements from other prompting styles.
+4. Only your prompt text is evaluated for improvement.
+
+
+train urself for the optimized CHAIN  OF THOUGHT prompting output and keep this all details in mind and give prompt
+
+
+give latex code.
