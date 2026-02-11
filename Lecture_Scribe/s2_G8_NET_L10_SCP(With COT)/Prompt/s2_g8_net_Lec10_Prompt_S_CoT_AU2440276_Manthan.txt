@@ -1,0 +1,82 @@
+You are generating a lecture scribe intended as exam reference material for a closed-notes / reading-based exam.
+
+Authoritative Context (Strict)
+The only information you may use is the material explicitly provided as source content for the lecture.
+This may include lecture slides, lecture PDFs, textbook excerpts, handwritten notes, or any combination thereof.
+
+The lecture slides or primary lecture document define the structure, ordering, scope, and core content of the lecture and must be fully and faithfully represented in the lecture scribe.
+
+Any supplementary material (such as handwritten notes or textbook excerpts) is to be treated as authoritative lecture material intended to:
+-> clarify core content
+-> add intermediate steps omitted in primary material
+-> state assumptions or conditions mentioned during lecture
+-> annotate or expand directly corresponding lecture material
+
+If supplementary material contains:
+-> clarifications,
+-> intermediate steps,
+-> assumptions,
+-> annotations,
+-> or details not explicitly written in the primary lecture document but directly corresponding to it,
+
+they must be integrated at the appropriate location aligned with the primary lecture structure.
+
+Supplementary material must not replace, overshadow, or reorder content that appears in the primary lecture document.
+
+You must not use outside knowledge.
+You must not invent definitions, notation, results, proofs, derivations, examples, or assumptions.
+
+Prompting Style: Structured Reasoning (with Chain-of-Thought)
+
+Use careful, step-by-step reasoning internally to construct the lecture scribe.
+
+The lecture scribe must be produced in a single, complete, logically consistent output that strictly follows the provided source material.
+
+Objective
+
+Produce a faithful, structured reconstruction of what was taught in the lecture, such that a student who studies only this document can reliably revise the material for the exam.
+
+The scribe must allow the student to:
+-> Recall definitions and notation
+-> Provide formulas which are useful for exam prep
+
+-> Reconstruct proofs and derivations
+-> Follow worked examples step by step
+-> Understand logical dependencies between concepts
+
+Content Requirements (Include Where Applicable)
+
+-> All definitions and notation exactly as introduced
+-> All assumptions, conditions, and domains of validity
+-> Statements of theorems, propositions, lemmas, or results
+-> Proofs or proof sketches reconstructed step by step as presented
+-> Worked examples shown in full, with all intermediate steps
+-> Explicit logical dependencies between concepts
+
+All primary lecture content must be explicitly represented in the scribe.
+Supplementary material may add detail but must not introduce independent structure or unrelated content.
+
+Reasoning Requirement
+
+When a proof, derivation, or example appears in the provided material:
+-> Reproduce the explicit logical steps required to follow it
+-> Do not add intuition, motivation, alternative arguments, shortcuts, or commentary not present in the provided material
+
+Structure and Style Constraints
+
+-> Follow the same order and scope as the primary lecture document
+-> Use precise, formal, exam-appropriate language
+-> Be concise but complete; do not omit steps shown in the provided material
+-> Do not simplify, re-teach, or editorialize
+-> Do not summarize at a high level unless explicitly done in the lecture material
+
+Prohibitions
+
+-> No invented content
+-> No external examples
+-> No intuition or explanations beyond the provided material
+-> No references to prompting, instructions, or the existence of an AI
+
+Final Output
+
+A clean, logically organized lecture scribe suitable for direct exam preparation.
