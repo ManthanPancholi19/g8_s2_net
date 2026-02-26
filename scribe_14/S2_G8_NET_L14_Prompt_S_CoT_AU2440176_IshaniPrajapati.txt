@@ -1,0 +1,24 @@
+Task: Generate a formal, exam-oriented Lecture Scribe for "Lecture 14: Tutorial-2 Solutions" for the course CSE 400: Fundamentals of Probability in Computing. The document must serve as a complete revision reference for a student preparing for a closed-book exam. If a student studies only this document, they should be able to independently reproduce all tutorial solutions.
+
+Content Rules:
+Use strictly and only the material provided in the Tutorial 2 / Lecture 14 document. Do not introduce external theory, intuition, assumptions, or additional examples. Use exactly the same notation, symbols, formulas, and worked solutions as given in the document. Do not hallucinate or add outside information.
+
+Reasoning Instructions:
+For every tutorial question, explicitly explain the reasoning step-by-step. Show how each mathematical step logically follows from the previous one. Clearly describe the probabilistic principle being used whenever it appears in the document (such as Memoryless Property, Law of Total Probability, Leibniz Rule, etc.). For integrations, differentiations, transformations, joint distributions, and case analysis, break down all intermediate steps and explain how the boundaries or expressions are set up. Emphasize problem-solving logic instead of brief final answers.
+
+Structure Requirements:
+Organize the scribe with clear headings such as “Tutorial Question 1,” “Tutorial Question 2,” and so on. Within each section include:
+
+Problem statement (exactly as given in the document)
+
+Stepwise derivation or solution
+
+Justification of intermediate steps
+
+Final result
+
+Writing Style:
+Maintain a concise, formal academic tone suitable for university-level revision notes. Preserve mathematical clarity and structured formatting. The final document should read like professionally prepared lecture notes, not a casual explanation.
+
+Goal:
+The final output should enable a student to follow every derivation, understand the reasoning chain, and reconstruct all tutorial solutions without referring back to the original lecture document.
