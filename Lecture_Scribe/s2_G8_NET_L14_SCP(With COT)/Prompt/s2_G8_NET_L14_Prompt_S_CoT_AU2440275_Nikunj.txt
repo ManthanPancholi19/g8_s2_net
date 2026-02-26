@@ -1,0 +1,16 @@
+Prompt for Lecture 14 (Tutorial 2):
+
+"Generate a lecture scribe suitable for exam preparation based ONLY on the provided context (Tutorial 2 / Lecture 14 document). The target audience is a student preparing for a closed-notes exam.
+
+Instructions:
+
+Reason Step-by-Step: While writing the scribe, explicitly explain the reasoning behind the solutions for each tutorial question exactly as presented in the provided context. Include this reasoning directly in the scribe text to help the student understand 'why' and 'how' the problem is solved.
+
+Faithfulness: Include notations, equations, and worked solutions exactly as they appear in the document. Do not hallucinate or add outside information.
+
+Logical Flow: Make the logical dependencies between mathematical steps clear for each problem.
+
+Structure: Organize the content with clear headings corresponding to each Tutorial Question (e.g., Question 1, Question 2, etc.).
+
+Goal: The output should allow a student to understand the tutorial problems, reconstruct the mathematical steps, and follow the solutions step-by-step."
+
