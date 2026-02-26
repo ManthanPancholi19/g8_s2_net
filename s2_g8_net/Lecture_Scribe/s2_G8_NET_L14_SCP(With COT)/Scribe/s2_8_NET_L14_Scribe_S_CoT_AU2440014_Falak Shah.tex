@@ -1,0 +1,215 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{hyperref}
+
+\title{Lecture Scribe: Lecture 14 – Tutorial-2 Solutions}
+\author{Course: CSE 400: Fundamentals of Probability in Computing}
+\date{February 20, 2026}
+
+\begin{document}
+
+\maketitle
+
+\section*{Topic: Comprehensive Solutions to Probability Problem Set 2}
+\hrule
+\vspace{0.5cm}
+
+\subsection*{Q1. Geometric Probability: Ratio of Segments}
+
+\textbf{Problem:} A point is chosen at random on a line segment of length $L$. Find the probability that the ratio of the shorter to the longer segment is less than $1/4$.
+
+\subsubsection*{Reasoning \& Logic}
+\begin{itemize}
+    \item \textbf{Uniform Selection:} "At random" implies the point $x$ is chosen from a uniform distribution over $(0, L)$.
+    \item \textbf{Geometric Constraints:} The point $x$ creates two segments: $x$ and $L-x$. The ratio $R$ is $\frac{\min(x, L-x)}{\max(x, L-x)}$.
+    \item \textbf{Case Analysis:} We must split the analysis at the midpoint $L/2$ to determine which segment is shorter.
+\end{itemize}
+
+\subsubsection*{Step-by-Step Solution}
+\begin{itemize}
+    \item \textbf{Case 1 ($x \le L/2$):} Shorter segment is $x$; longer is $L-x$. 
+    \[ \frac{x}{L-x} < \frac{1}{4} \Rightarrow 4x < L - x \Rightarrow 5x < L \Rightarrow x < \frac{L}{5} \]
+    \item \textbf{Case 2 ($x > L/2$):} Shorter segment is $L-x$; longer is $x$. 
+    \[ \frac{L-x}{x} < \frac{1}{4} \Rightarrow 4L - 4x < x \Rightarrow 5x > 4L \Rightarrow x > \frac{4L}{5} \]
+    \item \textbf{Probability Calculation:} Valid regions are $(0, L/5)$ and $(4L/5, L)$. Total valid length = $(L/5 - 0) + (L - 4L/5) = 2L/5$. 
+    \[ P = \frac{\text{valid region}}{\text{total region}} = \frac{2L/5}{L} = \frac{2}{5} \]
+\end{itemize}
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.5cm}
+
+\subsection*{Q2. Bayesian Inference: Image Classification}
+
+\textbf{Problem:} A point with reading $X=5$ is chosen from an image with black (fraction $\alpha$) and white (fraction $1-\alpha$) regions. Find $\alpha$ such that the probability of error is the same for either classification.
+
+\subsubsection*{Reasoning \& Logic}
+\begin{itemize}
+    \item \textbf{Equal Error Condition:} For the error probability to be identical regardless of the conclusion, the posterior probabilities must be equal: $P(B|X=5) = P(W|X=5) = 1/2$.
+    \item \textbf{Bayes' Theorem:} We use the Likelihoods $f(x|B)$ and $f(x|W)$ along with Priors $P(B)$ and $P(W)$ to find the posterior.
+\end{itemize}
+
+\subsubsection*{Step-by-Step Solution}
+\begin{itemize}
+    \item \textbf{Distributions:} $X|W \sim N(4, 4) \Rightarrow \sigma_1=2$; $X|B \sim N(6, 9) \Rightarrow \sigma_2=3$.
+    \item \textbf{Normal Density Formula:} $f(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}$.
+    \item \textbf{Likelihoods at $X=5$:} 
+    \[ f(5|B) = \frac{1}{3\sqrt{2\pi}}e^{-1/18}; \quad f(5|W) = \frac{1}{2\sqrt{2\pi}}e^{-1/8} \]
+    \item \textbf{Equating Posteriors:} 
+    \[ \frac{\alpha f(5|B)}{\alpha f(5|B) + (1-\alpha)f(5|W)} = \frac{1}{2} \Rightarrow \frac{3\alpha}{3\alpha + 2(1-\alpha)e^{-5/72}} = \frac{1}{2} \]
+    \item \textbf{Final Result:} $3\alpha = 2(1-\alpha)(0.93) \Rightarrow 4.86\alpha = 1.86 \Rightarrow \alpha \approx 0.38$.
+\end{itemize}
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.5cm}
+
+\subsection*{Q3. Optimization: Fire Station Location}
+
+\textbf{Problem:} Minimize $\mathbb{E}[|X-a|]$ for (a) $X \sim \text{Uniform}(0, A)$ and (b) $X \sim \text{Exponential}(\lambda)$.
+
+\subsubsection*{Reasoning \& Logic}
+To minimize the expected absolute distance, we define the expectation as an integral, split at the point of the absolute value change ($a$), and differentiate with respect to $a$.
+
+\subsubsection*{Step-by-Step Solution}
+\begin{itemize}
+    \item \textbf{(a) Uniform Case:} $\mathbb{E}[|X-a|] = \int_{0}^{a}(a-x)\frac{1}{A}dx + \int_{a}^{A}(x-a)\frac{1}{A}dx$. Differentiating and setting to zero: 
+    \[ \frac{d}{da}\left(\frac{2a^2-2aA+A^2}{2A}\right) = \frac{1}{2A}(4a-2A) = 0 \Rightarrow \textbf{Result: } a = A/2 \text{ (midpoint)} \]
+    \item \textbf{(b) Exponential Case:} $\mathbb{E}[|X-a|] = \int_{0}^{a}(a-x)\lambda e^{-\lambda x}dx + \int_{a}^{\infty}(x-a)\lambda e^{-\lambda x}dx$. Differentiating w.r.t $a$: 
+    \[ 1 - 2e^{-\lambda a} = 0 \Rightarrow e^{-\lambda a} = 1/2 \Rightarrow \textbf{Result: } a = \frac{\ln 2}{\lambda} \]
+\end{itemize}
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.5cm}
+
+\subsection*{Q4. Conditional Survival: Mixed Batteries}
+
+\textbf{Problem:} Find $P(X > t+s | X > t)$ for a mixture of two exponential battery types.
+
+\subsubsection*{Reasoning \& Logic}
+\begin{itemize}
+    \item \textbf{Law of Total Probability:} Used to find $P(X > t)$ by summing the survival probabilities of each type weighted by their selection probability.
+    \item \textbf{Conditional Probability:} $P(A|B) = P(A \cap B)/P(B)$. For survival, $P(X > t+s \cap X > t) = P(X > t+s)$.
+\end{itemize}
+
+\subsubsection*{Step-by-Step Solution}
+\begin{itemize}
+    \item $P(X > t) = p_1e^{-\lambda_1 t} + p_2e^{-\lambda_2 t}$.
+    \item $P(X > t+s) = p_1e^{-\lambda_1(t+s)} + p_2e^{-\lambda_2(t+s)}$.
+    \item \textbf{Result:} $P(X > t+s | X > t) = \frac{p_1e^{-\lambda_1(t+s)} + p_2e^{-\lambda_2(t+s)}}{p_1e^{-\lambda_1 t} + p_2e^{-\lambda_2 t}}$.
+\end{itemize}
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.5cm}
+
+\subsection*{Q5. Conditional Poisson Requests}
+
+\textbf{Problem:} Given $X \sim \text{Poi}(\lambda_1)$ and $Y \sim \text{Poi}(\lambda_2)$ are independent, find $P(X=k | X+Y=n)$.
+
+\subsubsection*{Reasoning \& Logic}
+The sum of independent Poisson variables is also Poisson with rate $\lambda_1 + \lambda_2$. We seek the ratio of the joint probability $P(X=k, Y=n-k)$ to the total probability $P(X+Y=n)$.
+
+\subsubsection*{Step-by-Step Solution}
+\begin{itemize}
+    \item $P(X=k|X+Y=n) = \frac{P(X=k)P(Y=n-k)}{P(X+Y=n)}$.
+    \item Substitute PMFs: $\frac{\left(\frac{e^{-\lambda_1}\lambda_1^k}{k!}\right)\left(\frac{e^{-\lambda_2}\lambda_2^{n-k}}{(n-k)!}\right)}{\frac{e^{-(\lambda_1+\lambda_2)}(\lambda_1+\lambda_2)^n}{n!}}$.
+    \item \textbf{Result:} $\binom{n}{k}\left(\frac{\lambda_1}{\lambda_1+\lambda_2}\right)^k\left(\frac{\lambda_2}{\lambda_1+\lambda_2}\right)^{n-k}$. (This is the Binomial distribution).
+\end{itemize}
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.5cm}
+
+\subsection*{Q6. Transformation: Mixed Distribution}
+
+\textbf{Problem:} $X \sim \text{Uniform}[-2, 2]$. $Y = g(X)$ where $g(x)=x$ if $|x| \ge 1$, and $g(x)=0$ if $|x| < 1$.
+
+\subsubsection*{Reasoning \& Logic}
+This transformation is a "crushing" function where a range of $X$ values map to a single value $Y=0$. This creates a point mass (discrete component) in the CDF.
+
+\subsubsection*{Step-by-Step Solution}
+\textbf{CDF $F_Y(y)$:}
+\begin{itemize}
+    \item $y \in [-2, -1): F_Y(y) = \frac{y+2}{4}$.
+    \item At $y=0: P(Y=0) = P(-1 < X < 1) = 2/4 = 1/2$.
+    \item $F_Y(0) = \frac{1}{4} + \frac{1}{2} = \frac{3}{4}$.
+    \item $y \in [1, 2]: F_Y(y) = \frac{y+2}{4}$.
+\end{itemize}
+\textbf{PDF $f_Y(y)$:} $1/4$ for $y \in (-2, -1) \cup (1, 2)$, with point mass $P(Y=0) = 1/2$.
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.5cm}
+
+\subsection*{Q7. Stock Movement Approximation}
+
+\textbf{Problem:} After 1000 periods, find the probability stock price is up $\ge 30\%$ given $u=1.012, d=0.990, p=0.52$.
+
+\subsubsection*{Reasoning \& Logic}
+The price $S_{1000} = S_0 u^k d^{1000-k}$, where $k$ is the number of up-moves. We take natural logs to solve for the required $k$.
+
+\subsubsection*{Step-by-Step Solution}
+\begin{itemize}
+    \item $u^k d^{1000-k} \ge 1.30 \Rightarrow k(\ln u - \ln d) + 1000 \ln d \ge \ln(1.30)$.
+    \item $k \ge \frac{\ln(1.30) - 1000 \ln d}{\ln u - \ln d} \approx 469.4 \Rightarrow k \ge 470$.
+    \item \textbf{Result:} $k \sim \text{Binomial}(1000, 0.52)$. $P(k \ge 470) = \sum_{k=470}^{1000}\binom{1000}{k}(0.52)^k(0.48)^{1000-k}$.
+\end{itemize}
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.5cm}
+
+\subsection*{Q8. Exponential Repair Times}
+
+\textbf{Problem:} $X \sim \text{Exp}(1/2)$. Find (a) $P(X>2)$ and (b) $P(X \ge 10 | X > 9)$.
+
+\subsubsection*{Step-by-Step Solution}
+\begin{itemize}
+    \item \textbf{(a):} $P(X>2) = \int_{2}^{\infty}\frac{1}{2}e^{-x/2}dx = e^{-1} \approx 0.3679$.
+    \item \textbf{(b):} $P(X \ge 10 | X > 9) = \frac{P(X \ge 10)}{P(X > 9)} = \frac{e^{-5}}{e^{-9/2}} = e^{-1/2}$.
+\end{itemize}
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.5cm}
+
+\subsection*{Q9. PDF of $Z = \sqrt{X^2+Y^2}$}
+
+\textbf{Problem:} Find the PDF of $Z$ for independent $X, Y$.
+
+\subsubsection*{Reasoning \& Logic}
+The CDF $P(Z \le z)$ represents the joint density integrated over a circular region $x^2 + y^2 \le z^2$. We use \textbf{Leibniz's Rule} to differentiate the integral with respect to its limits.
+
+\subsubsection*{Step-by-Step Solution}
+\begin{itemize}
+    \item $F_Z(z) = \int_{-z}^{z}\int_{-\sqrt{z^2-x^2}}^{\sqrt{z^2-x^2}}f_X(x)f_Y(y)dy dx$.
+    \item Differentiating w.r.t. $z$ using Leibniz's rule: $\frac{d}{dz}\sqrt{z^2-x^2} = \frac{z}{\sqrt{z^2-x^2}}$.
+    \item \textbf{Result:} $f_Z(z) = z\int_{-z}^{z}\frac{f_X(x)[f_Y(\sqrt{z^2-x^2}) + f_Y(-\sqrt{z^2-x^2})]}{\sqrt{z^2-x^2}}dx, z>0$.
+\end{itemize}
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.5cm}
+
+\subsection*{Q10. Joint Distribution of Maxima}
+
+\textbf{Problem:} Find the joint CDF of $M_n = \max(X_1, \dots, X_n)$ and $M_{n+1}$.
+
+\subsubsection*{Reasoning \& Logic}
+$M_{n+1} = \max(M_n, X_{n+1})$. We analyze the joint event $P(M_n \le x, M_{n+1} \le y)$ based on the relative values of $x$ and $y$.
+
+\subsubsection*{Step-by-Step Solution}
+\begin{itemize}
+    \item \textbf{Case 1 ($x \le y$):} Requires $X_1, \dots, X_n \le x$ AND $X_{n+1} \le y$.
+    \[ P = P(M_n \le x)P(X_{n+1} \le y) = F(x)^n F(y) \]
+    \item \textbf{Case 2 ($x > y$):} If $M_{n+1} \le y$, then $M_n$ is automatically $\le y$. Since $y < x$, the condition $M_n \le x$ is redundant.
+    \[ P = P(M_{n+1} \le y) = F(y)^{n+1} \]
+    \item \textbf{Final Joint CDF:} 
+    \[ \begin{cases} F(x)^n F(y) & x \le y \\ F(y)^{n+1} & x > y \end{cases} \]
+\end{itemize}
+
+\end{document}
