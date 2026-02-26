@@ -1,0 +1,89 @@
+You are generating a high-quality Lecture Scribe (exam-oriented study guide) strictly using the lecture PPT and tutorial material that I provide.
+
+Context:
+This scribe is for closed-notes exam preparation. The content must strictly correspond to the topics and questions covered in the provided lecture PPT and Tutorial (e.g., Tutorial 2 / Lecture 14). Do not introduce any external knowledge, examples, or theory beyond what exists in the provided material.
+
+Core Objective:
+Create structured, concept-focused, formula-rich notes that directly correspond to the tutorial questions and lecture topics. The notes must include formulas, derivations, explanations, reasoning steps, and (where relevant) complete worked solutions.
+
+Strict Content Rules:
+
+1. Use only the material present in the uploaded lecture PPT and tutorial document.
+2. Do not add external examples, extra theory, or content from memory.
+3. You may restate and reorganize content, but do not copy explanatory text verbatim.
+4. Problem statements, definitions, and equation labels may remain unchanged if necessary.
+5. All formulas and mathematical expressions must be included exactly as used in the material.
+6. If a figure, equation number, or table is referenced (e.g., Equation (3), Fig. 2), explicitly mention it and explain its role in the reasoning.
+
+Structure Requirements:
+
+1. Clear Sectioning
+   Organize the scribe topic-wise and question-wise.
+   Use headings such as:
+
+* Question 1
+* Question 2
+* Question 3
+  or topic-based headings matching the lecture structure.
+
+2. For Each Question Include:
+
+* Concept Being Tested
+* Key Definitions (if present in material)
+* Core Formulas Used
+* Step-by-step Logical Solution Flow
+* Explanation of Why Each Step Works
+* Final Result
+* Interpretation (if relevant)
+
+3. Formula Emphasis (Very Important)
+
+* Clearly isolate important formulas.
+* Show derivation flow where present.
+* Highlight dependencies between equations.
+* Mention assumptions (independence, distribution type, uniformity, etc.) explicitly.
+
+4. Reasoning Clarity
+
+* Explain transitions between steps.
+* Justify substitutions.
+* Show why derivatives are taken, why integrals are split, why conditioning is applied, etc.
+* Make implicit reasoning explicit.
+
+5. Exam-Focused Enhancements
+   After each question, add:
+
+* Common mistakes to avoid (based strictly on the material)
+* Quick exam tips (e.g., recognize binomial structure after simplification, identify memoryless property, use symmetry, etc.)
+* Important pattern recognition hints (only if derivable from the given content)
+
+6. Mathematical Presentation Rules
+
+* Preserve all distributions, parameters, and notation exactly.
+* Maintain clean mathematical flow.
+* Do not skip intermediate logic if it appears in the original solution.
+
+Phased Output Requirement:
+
+Phase 1:
+Generate a fully sectioned Lecture Scribe covering ALL questions/topics present in the provided material.
+
+Phase 2:
+Add an Appendix Section containing:
+
+* A compact formula sheet summarizing all key formulas used
+* Distribution properties used (Uniform, Exponential, Poisson, Normal, Binomial, etc., if present)
+* Important derived expressions
+* Conditional probability structures used
+* Transformation formulas used
+* Any recurring structural results
+
+Tone and Style:
+
+* Clear, structured, precise, and exam-ready.
+* Conceptually deep but concise.
+* Logical progression over narrative explanation.
+* Written for a student revising one day before an exam.
+
+Final Reminder:
+Do not introduce any material beyond the uploaded lecture PPT and tutorial. Reorganize, clarify, and enhance - but do not expand beyond the provided content.  

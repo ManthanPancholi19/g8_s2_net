@@ -1,0 +1,381 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\begin{document}
+\begin{center}
+\section*{CSE 400 -- Fundamentals of Probability in Computing\\ Lecture 14 -- Tutorial 2 Scribe}
+\end{center}
+
+\vspace{2mm}
+
+\subsection*{Phase-1 Scribe}
+
+\section*{Question 1}
+Uniform selection on an interval and probability via geometric length ratio. Handling expressions involving min and max through case analysis.
+
+\textbf{Interpretation}
+
+A point is chosen uniformly on a segment of length $L$.  
+
+Let $0 < x < L$.  
+
+Segments formed: $x$ and $L-x$  
+
+\[
+R = \frac{\min(x, L-x)}{\max(x, L-x)}
+\]
+
+We compute:
+\[
+P(R < 1/4)
+\]
+
+Since selection is uniform:
+\[
+P = \frac{\text{length of valid region}}{L}
+\]
+
+\textbf{Case Analysis (Split at Midpoint)}
+
+Switch occurs at:
+\[
+x = \frac{L}{2}
+\]
+
+\textbf{Case 1:} $x \le \frac{L}{2}$
+
+\[
+\frac{x}{L-x} < \frac{1}{4}
+\]
+
+\[
+4x < L-x
+\]
+
+\[
+5x < L
+\]
+
+\[
+x < \frac{L}{5}
+\]
+
+\textbf{Case 2:} $x > \frac{L}{2}$
+
+\[
+\frac{L-x}{x} < \frac{1}{4}
+\]
+
+\[
+4L - 4x < x
+\]
+
+\[
+5x > 4L
+\]
+
+\[
+x > \frac{4L}{5}
+\]
+
+Valid region:
+\[
+(0, L/5) \cup (4L/5, L)
+\]
+
+Total length:
+\[
+\frac{L}{5} + \frac{L}{5} = \frac{2L}{5}
+\]
+
+Final Probability:
+\[
+P = \frac{2L/5}{L} = \frac{2}{5}
+\]
+
+\section*{Question 2}
+Bayes’ theorem with continuous densities.  
+Equal posterior probabilities imply equal error.
+
+Given:
+
+\[
+X|W \sim N(4,4), \quad \sigma_1 = 2
+\]
+\[
+X|B \sim N(6,9), \quad \sigma_2 = 3
+\]
+\[
+P(B)=\alpha, \quad P(W)=1-\alpha
+\]
+\[
+X=5
+\]
+
+Equal error condition:
+\[
+P(B|X=5)=P(W|X=5)=\frac{1}{2}
+\]
+
+Bayes formula:
+\[
+P(B|X=5)=\frac{\alpha f(5|B)}{\alpha f(5|B)+(1-\alpha)f(5|W)}
+\]
+
+Normal density:
+\[
+f(x)=\frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+\]
+
+\[
+f(5|B)=\frac{1}{3\sqrt{2\pi}}e^{-1/18}
+\]
+\[
+f(5|W)=\frac{1}{2\sqrt{2\pi}}e^{-1/8}
+\]
+
+Substitution:
+\[
+\frac{3\alpha}{3\alpha + 2(1-\alpha)e^{-5/72}}=\frac{1}{2}
+\]
+
+\[
+6\alpha = 3\alpha + 2(1-\alpha)e^{-5/72}
+\]
+
+\[
+3\alpha = 2(1-\alpha)(0.93)
+\]
+
+\[
+4.86\alpha = 1.86
+\]
+
+\[
+\alpha \approx 0.3827
+\]
+
+\section*{Question 3}
+
+\subsection*{(a) Uniform Case}
+
+\[
+X \sim \text{Uniform}(0,A)
+\]
+
+\[
+f_X(x)=\frac{1}{A}
+\]
+
+Minimize:
+\[
+E[|X-a|]
+\]
+
+\[
+E[|X-a|]=\int_0^a (a-x)\frac{1}{A}dx + \int_a^A (x-a)\frac{1}{A}dx
+\]
+
+After evaluation:
+\[
+\frac{2a^2 - 2aA + A^2}{2A}
+\]
+
+Differentiate:
+\[
+\frac{1}{2A}(4a-2A)=0
+\]
+
+\[
+4a=2A
+\]
+
+\[
+a=\frac{A}{2}
+\]
+
+\subsection*{(b) Exponential Case}
+
+\[
+X \sim \text{Exponential}(\lambda)
+\]
+
+\[
+f(x)=\lambda e^{-\lambda x}
+\]
+
+\[
+\frac{d}{da}E[|X-a|]=1-2e^{-\lambda a}=0
+\]
+
+\[
+2e^{-\lambda a}=1
+\]
+
+\[
+e^{-\lambda a}=\frac{1}{2}
+\]
+
+\[
+a=\frac{\ln 2}{\lambda}
+\]
+
+\section*{Question 4}
+
+Mixture exponential:
+
+\[
+P(X>t)=p_1 e^{-\lambda_1 t}+p_2 e^{-\lambda_2 t}
+\]
+
+\[
+P(X>t+s)=p_1 e^{-\lambda_1(t+s)}+p_2 e^{-\lambda_2(t+s)}
+\]
+
+\[
+P(X>t+s|X>t)=\frac{p_1 e^{-\lambda_1(t+s)}+p_2 e^{-\lambda_2(t+s)}}{p_1 e^{-\lambda_1 t}+p_2 e^{-\lambda_2 t}}
+\]
+
+\section*{Question 5}
+
+\[
+X \sim \text{Poisson}(\lambda_1), \quad Y \sim \text{Poisson}(\lambda_2)
+\]
+
+\[
+P(X=k|X+Y=n)=\frac{P(X=k)P(Y=n-k)}{P(X+Y=n)}
+\]
+
+\[
+= \binom{n}{k}\left(\frac{\lambda_1}{\lambda_1+\lambda_2}\right)^k
+\left(\frac{\lambda_2}{\lambda_1+\lambda_2}\right)^{n-k}
+\]
+
+\section*{Question 6}
+
+\[
+X \sim \text{Uniform}[-2,2]
+\]
+
+\[
+f_X(x)=\frac{1}{4}
+\]
+
+\[
+P(Y=0)=\frac{1}{2}
+\]
+
+\[
+f_Y(y)=\frac{1}{4}, \quad -2<y<-1 \text{ and } 1<y<2
+\]
+
+\section*{Question 7}
+
+\[
+S_{1000}=S_0 u^k d^{1000-k}
+\]
+
+\[
+u^k d^{1000-k} \ge 1.30
+\]
+
+\[
+k(\ln u-\ln d)+1000\ln d \ge \ln(1.30)
+\]
+
+\[
+k \ge 470
+\]
+
+\[
+k \sim \text{Binomial}(1000,0.52)
+\]
+
+\[
+P(k \ge 470)=\sum_{k=470}^{1000}\binom{1000}{k}(0.52)^k(0.48)^{1000-k}
+\]
+
+\section*{Question 8}
+
+\[
+X \sim \text{Exponential}(1/2)
+\]
+
+\[
+f(x)=\frac{1}{2}e^{-x/2}
+\]
+
+\[
+P(X>2)=e^{-1}
+\]
+
+\[
+P(X\ge 10|X>9)=e^{-1/2}
+\]
+
+\section*{Question 9}
+
+\[
+Z=\sqrt{X^2+Y^2}
+\]
+
+\[
+F_Z(z)=\int_{-z}^{z}\int_{-\sqrt{z^2-x^2}}^{\sqrt{z^2-x^2}} f_X(x)f_Y(y)dydx
+\]
+
+\[
+f_Z(z)=z\int_{-z}^{z} \frac{f_X(x)\left[f_Y(\sqrt{z^2-x^2})+f_Y(-\sqrt{z^2-x^2})\right]}{\sqrt{z^2-x^2}}dx
+\]
+
+\section*{Question 10}
+
+\[
+M_n=\max(X_1,\dots,X_n)
+\]
+
+\[
+P(M_n \le x)=F(x)^n
+\]
+
+\[
+P(M_n \le x, M_{n+1} \le y)=
+\begin{cases}
+F(x)^n F(y), & x \le y \\
+F(y)^{n+1}, & x>y
+\end{cases}
+\]
+
+\vspace{4mm}
+
+\subsection*{Phase-2 Formulas}
+
+\vspace{2mm}
+
+\text{Uniform:}
+\[
+f(x)=\frac{1}{A}
+\]
+
+\text{Exponential:}
+\[
+f(x)=\lambda e^{-\lambda x}
+\]
+
+\text{Normal:}
+\[
+f(x)=\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+\]
+
+\text{Poisson:}
+\[
+P(X=k)=e^{-\lambda}\frac{\lambda^k}{k!}
+\]
+
+\text{Binomial:}
+\[
+P(X=k)=\binom{n}{k}p^k(1-p)^{n-k}
+\]
+
+\end{document}
