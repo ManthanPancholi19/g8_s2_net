@@ -1,0 +1,46 @@
+Task:
+Create an exam-oriented lecture scribe using only the material contained in the provided Tutorial 2 / Lecture 14 document.
+
+Purpose:
+The notes must function as complete revision material for a student preparing for a closed-book examination, allowing them to reproduce the tutorial solutions independently.
+
+Content Rules:
+
+Use strictly the information, notation, formulas, and worked examples present in the document.
+
+Do not introduce external explanations, assumptions, or additional theory not explicitly given.
+
+Explanation Requirement:
+
+For every tutorial problem, present the solution process in a clear sequential manner.
+
+Describe the reasoning that connects each mathematical step so the reader understands how one step leads to the next.
+
+Emphasize the problem-solving logic rather than brief answers.
+
+Organization:
+
+Divide the scribe into clearly labeled sections such as Tutorial Question 1, Tutorial Question 2, etc.
+
+Within each section include:
+
+Problem statement (as given)
+
+Stepwise derivation or solution
+
+Justification of intermediate steps
+
+Final result
+
+Writing Style:
+
+Maintain a concise academic tone suitable for revision notes.
+
+Preserve mathematical clarity and formatting.
+
+Ensure the final document reads like structured lecture notes rather than a casual explanation.
+
+Expected Outcome:
+A logically ordered scribe that enables a student to follow the derivations, understand the reasoning chain, and reconstruct all tutorial solutions without referring back to the original lecture.
+
+give latex code 
