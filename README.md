@@ -1,65 +1,86 @@
-## Milestone 1 – Probabilistic Task Offloading in D2D Edge Networks
+# Probabilistic Task Offloading in D2D Edge Networks
+**Ahmedabad University | CSE 400: Fundamentals of Probability in Computing**
 
-### Project Overview
+---
 
-This project studies task offloading in Device-to-Device (D2D) edge computing networks under uncertainty.
-The main focus is on how uncertain task processing time and network conditions affect whether tasks can be completed before their deadlines. A probabilistic approach is used instead of fixed execution times.
+## 📌 Project Context and Motivation
+In the era of 5G and 6G, mobile applications such as Augmented Reality (AR), autonomous driving, and real-time speech recognition are becoming increasingly resource-intensive. Individual Mobile Devices (MDs) often lack the computational power to process these tasks within strict latency requirements. 
 
-### Objective
+While offloading to the cloud is an option, it often introduces significant network latency. Our project explores **Device-to-Device (D2D) Edge Computing**, where idle peer devices in the vicinity act as service nodes. The critical challenge is the **Intrinsic Uncertainty** of the environment: wireless channels fade, task sizes vary, and peer devices have fluctuating workloads. Traditional deterministic models fail here; we address this by treating the entire system through a probabilistic lens.
 
-The objective of Milestone 1 is to understand the system from a probabilistic point of view and identify:
+---
 
-* The core problem in the system
-* Sources of uncertainty
-* Key random variables
-* How probabilistic reasoning supports offloading decisions
+## 🎯 Project Objective and Scope
+The primary objective is to **Maximize the Global Task Completion Rate (TCR)**. 
+Unlike standard systems that aim to minimize "Average Delay," our model recognizes that meeting a hard deadline ($\tau$) is a binary success/failure event. 
 
-### System Description
+*   **Objective Function:** $\max_a \sum_{i \in N} E[Y_i]$
+*   **Decision Problem:** Determining the optimal offloading target in a decentralized mesh.
+*   **Metric:** Shifting the focus from "Mean Latency" to "Bernoulli Success Probability."
 
-In the system, mobile devices generate computation-intensive tasks such as image processing or speech recognition.
-Tasks can be executed locally or offloaded to nearby devices using D2D communication. Each task has a deadline, and system performance depends on whether the task finishes before this deadline.
+---
 
-### Sources of Uncertainty
+## 🎲 Sources of Uncertainty
+To build a robust system, we identify and model the primary layers of randomness:
+1.  **Processing Uncertainty (The Root Cause):** CPU time for a specific task (e.g., image recognition) varies based on input data complexity.
+2.  **Traffic Uncertainty (Arrival Bursts):** User behavior is sporadic, meaning tasks do not arrive at fixed intervals.
+3.  **Queueing Uncertainty:** Because arrivals and processing times are random, the waiting time in the buffer is highly volatile.
+4.  **Channel Uncertainty:** Small-scale fading and shadowing in wireless links cause fluctuating transmission rates.
+5.  **Device Heterogeneity:** Each peer device has a different computation capability ($c_i$), leading to different service rate distributions.
 
-The project considers multiple sources of uncertainty:
+---
 
-* Task processing time varies based on task type and input data
-* Task arrivals are random over time
-* Queueing and contention occur when multiple tasks compete for the same device
-* Transmission delay changes with network conditions
-* Devices have different computation capabilities
+## 📊 Key Random Variables
+To mathematically model the system, we define the following RVs:
+*   **$X_{proc}$ (Task Processing Time):** A continuous RV representing service time.
+*   **$T_{inter}$ (Inter-arrival Time):** Modeled as an Exponential distribution ($\sim Exp(\lambda)$).
+*   **$W_q$ (Queue Waiting Time):** A derived RV representing buffer delay.
+*   **$L_q$ (Queue Length):** Follows a Geometric distribution in our M/M/1 setup.
+*   **$Y_i$ (Completion Indicator):** A Bernoulli RV ($1$ if Success, $0$ if Failure).
 
-### Key Random Variables
+---
 
-The main random variables used in Milestone 1 are:
+## 📐 Mathematical Modeling & Queueing Theory
+Each mobile device is modeled as an **M/G/1 queueing system**. We utilize the Laplace-Stieltjes transform to derive the probability distribution of the sojourn time (total time).
 
-* Task Processing Time
-* Task Arrival Time
-* Task Completion Time
-* Task Completion Indicator (completed before deadline or not)
-* Device workload
+### Completion Probability Formula
+The probability that a task with deadline $\tau$ is completed on time is given by the Cumulative Distribution Function (CDF):
+$$F(t \le \tau) = 1 - \exp(-(\mu - \lambda)\tau_{eff})$$
 
-### Probabilistic Modeling
+*   **$\mu$:** The service rate of the device.
+*   **$\lambda$:** The total arrival rate (local + offloaded tasks).
+*   **$\tau_{eff}$:** The effective time left ($\tau - t_{trans}$) after subtracting transmission delay.
+*   **Stability Constraint:** The system is stable only if $\mu > \lambda$.
 
-* Task arrivals are modeled using a Poisson process
-* Task processing time is modeled using probability distributions such as exponential, gamma, or Gaussian depending on application type
-* An M/G/1 queueing model is used to relate arrival rate and processing time to completion probability
-* Completion rate is computed as the probability that a task finishes before its deadline
+---
 
-### Decision Making
+## 📉 Probabilistic Reasoning: Why Averages Lie
+A cornerstone of our project is the application of **Jensen’s Inequality** to prove that designing for averages leads to system failure. 
 
-Each device estimates the probability of successful task completion for different offloading options.
-Offloading decisions are made to maximize this probability.
-A game-theoretic approach is used, where devices update decisions until a stable state (Nash equilibrium) is reached.
+In mobile edge networks, the "cost" of delay is a **convex function**—the penalty for being very late is disproportionately higher than the benefit of being early.
+$$E[C(T)] \ge C(E[T])$$
 
-### Files Included
+**The Analogy:** If a teacher penalizes you $T^2$ points for being late, and you are 2 minutes late on average, you might expect a 4-point penalty. But if you are on time one day (0 points) and 4 minutes late the next (16 points), your average penalty is actually 8 points. **Variance increases cost.** Our implementation must simulate the full PDF variance to capture the true risk of failure.
 
-* **Concept Map**: Visual explanation of the system, uncertainty, random variables, probabilistic models, and decisions
-* **Scribe Report**: Detailed written explanation of probabilistic reasoning and assumptions
-* **Presentation (PPT)**: Summary of the system, models, and Milestone 1 understanding
-* **Base Paper**: Reference research paper used for understanding and modeling
+---
 
-### Current Scope
+## 🎮 Decision Logic: Game Theoretic Formulation
+Since centralized control is impractical in a dynamic D2D mesh, we model the system as a **Non-Cooperative Strategic Game**.
 
-This milestone focuses on high-level understanding and simplified assumptions.
-More detailed modeling and refinements will be done in later milestones.
+### Nash Equilibrium
+Devices act as rational players, reacting to the "Neighbor Load" to make an optimal local offloading decision. The system reaches a **Nash Equilibrium** when no single device can improve its task completion probability by unilaterally changing its strategy.
+
+### Potential Function ($\Phi$)
+To prove the system converges to stability, we use a **Potential Game** framework. We define a global potential function $\Phi(a)$ that captures aggregate network congestion. Whenever a device makes a decision that improves its own success rate, the global potential strictly increases:
+$$\Phi(a_{new}) - \Phi(a_{old}) > 0 \implies \text{System Converges}$$
+
+---
+
+## 🚀 Planned Refinements
+*   **Evolution to M/G/1:** Moving beyond Exponential simplifications to handle "heavy-tailed" risks (tasks like speech recognition that follow Gamma/Gaussian distributions).
+*   **Solving "Stale Information":** Addressing the ambiguity that occurs when a device bases its offloading decision on outdated neighbor workload data.
+*   **Dynamic Calibration:** Accounting for CPU throttling where processing capability ($\mu$) changes based on device thermal states.
+
+---
+**Base Paper:** [View Technical Reference](./base_paper/base_paper_Probabilistic_Task_Offloading_with_Uncertain_Processing_Times_in_Device-to-Device_Edge_Networks.pdf)  
+*Last Updated: February 26, 2026*
