@@ -149,6 +149,7 @@ class Pro_D2D_Baseline_Simulation:
 
     def generate_dashboard(self, total_tasks, successful_tasks):
         df = pd.DataFrame(self.history)
+        df.to_csv(os.path.join(EXP_DIR, "..", "data", "simulation_log_m3.csv"), index=False)
         final_rate = (successful_tasks / total_tasks) * 100
         print(f"\n Final Success Rate: {final_rate:.2f}%")
 
