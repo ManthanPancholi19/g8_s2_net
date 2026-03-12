@@ -1,0 +1,399 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{setspace}
+
+\geometry{margin=1in}
+\setstretch{1.2}
+
+\title{Lecture 18 Scribe\\
+Marginal PMF, Correlation, Covariance, Joint Gaussian Random Variables}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{1. Marginal PMF}
+
+\subsection*{1.1 Definition}
+
+For discrete random variables $X$ and $Y$, the joint PMF is defined as
+
+\[
+p_{XY}(x,y) = P(X = x, Y = y)
+\]
+
+This function gives the probability that both variables simultaneously take particular values.
+
+The marginal PMF of each variable is obtained by summing over the other variable:
+
+\[
+p_X(x) = \sum_y p_{XY}(x,y)
+\]
+
+\[
+p_Y(y) = \sum_x p_{XY}(x,y)
+\]
+
+\subsubsection*{Reasoning Behind the Definition}
+
+The joint PMF describes the combined behavior of two variables.
+
+However, sometimes we want to know the distribution of only one variable regardless of the value of the other variable.
+
+To obtain this, we sum all probabilities involving that value of the variable across every possible value of the other variable.
+
+\textbf{Key idea:} The marginal PMF of one variable is obtained by summing the joint PMF over all possible values of the other variable.
+
+\section*{1.2 Marginal PMF from a Joint PMF Table}
+
+When the joint PMF is given in a table, marginal PMFs can be computed by summing rows and columns.
+
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$p_{XY}(x,y)$ & $y_1$ & $y_2$ & $y_3$ \\
+\midrule
+$x_1$ & $p_{11}$ & $p_{12}$ & $p_{13}$ \\
+$x_2$ & $p_{21}$ & $p_{22}$ & $p_{23}$ \\
+$x_3$ & $p_{31}$ & $p_{32}$ & $p_{33}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+From this structure
+
+\[
+p_X(x_i) = \sum_j p_{ij}
+\]
+
+\[
+p_Y(y_j) = \sum_i p_{ij}
+\]
+
+\textbf{Reasoning}
+
+\begin{itemize}
+\item Row sums $\rightarrow$ marginal distribution of $X$
+\item Column sums $\rightarrow$ marginal distribution of $Y$
+\end{itemize}
+
+Also the marginal PMFs must satisfy
+
+\[
+\sum_i p_X(x_i)=1
+\]
+
+\[
+\sum_j p_Y(y_j)=1
+\]
+
+so they remain valid probability distributions.
+
+\section*{1.3 Example: Computing Marginal PMFs}
+
+Given joint PMF
+
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+$p_{XY}(x,y)$ & $y=0$ & $y=1$ \\
+\midrule
+$x=0$ & $\frac{1}{8}$ & $\frac{1}{4}$ \\
+$x=1$ & $\frac{3}{8}$ & $\frac{1}{4}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Step 1: Compute $p_X(x)$}
+
+\[
+p_X(0)=\frac{1}{8}+\frac{1}{4}
+\]
+
+\[
+=\frac{1}{8}+\frac{2}{8}=\frac{3}{8}
+\]
+
+\[
+p_X(1)=\frac{3}{8}+\frac{1}{4}
+\]
+
+\[
+=\frac{3}{8}+\frac{2}{8}=\frac{5}{8}
+\]
+
+Thus
+
+\[
+p_X(x)=
+\begin{cases}
+3/8 & x=0 \\
+5/8 & x=1
+\end{cases}
+\]
+
+\subsection*{Step 2: Compute $p_Y(y)$}
+
+\[
+p_Y(0)=\frac{1}{8}+\frac{3}{8}=\frac{4}{8}=\frac{1}{2}
+\]
+
+\[
+p_Y(1)=\frac{1}{4}+\frac{1}{4}=\frac{1}{2}
+\]
+
+Thus
+
+\[
+p_Y(y)=
+\begin{cases}
+1/2 & y=0 \\
+1/2 & y=1
+\end{cases}
+\]
+
+\section*{2. Correlation}
+
+A basic way to measure the joint behavior of two random variables is through the product moment
+
+\[
+R_{XY}=E[XY]
+\]
+
+\textbf{Reasoning}
+
+This quantity represents the average value of the product $XY$.
+
+However:
+
+\begin{itemize}
+\item $R_{XY}$ depends on the scale of $X$ and $Y$
+\item It is computed about the origin rather than the means
+\end{itemize}
+
+Thus it mixes together mean values, spread, and dependence.
+
+If
+
+\[
+R_{XY}=0
+\]
+
+then the variables are orthogonal about the origin.
+
+To obtain a better measure of dependence we center the variables. This leads to covariance.
+
+\section*{3. Covariance}
+
+\subsection*{3.1 Definition}
+
+\[
+Cov(X,Y)=E[(X-\mu_X)(Y-\mu_Y)]
+\]
+
+where
+
+\[
+\mu_X=E[X], \quad \mu_Y=E[Y]
+\]
+
+\textbf{Interpretation}
+
+\begin{itemize}
+\item $Cov(X,Y)>0$ : positive covariance
+\item $Cov(X,Y)<0$ : negative covariance
+\item $Cov(X,Y)=0$ : no linear co-variation
+\end{itemize}
+
+\subsection*{3.2 Algebraic Form}
+
+\[
+Cov(X,Y)=E[(X-\mu_X)(Y-\mu_Y)]
+\]
+
+Expand
+
+\[
+=E[XY-X\mu_Y-Y\mu_X+\mu_X\mu_Y]
+\]
+
+Using linearity of expectation
+
+\[
+=E[XY]-\mu_YE[X]-\mu_XE[Y]+\mu_X\mu_Y
+\]
+
+Since
+
+\[
+\mu_X=E[X], \quad \mu_Y=E[Y]
+\]
+
+we obtain
+
+\[
+Cov(X,Y)=E[XY]-E[X]E[Y]
+\]
+
+\section*{3.3 Properties of Covariance}
+
+\textbf{1. Symmetry}
+
+\[
+Cov(X,Y)=Cov(Y,X)
+\]
+
+\textbf{2. Variance as Special Case}
+
+\[
+Cov(X,X)=Var(X)
+\]
+
+\textbf{3. Linearity}
+
+\[
+Cov(aX+b,cY+d)=ac \, Cov(X,Y)
+\]
+
+\textbf{4. Independence}
+
+If $X$ and $Y$ are independent
+
+\[
+Cov(X,Y)=0
+\]
+
+However zero covariance does not necessarily imply independence.
+
+\section*{4. Example}
+
+Given
+
+\[
+Y=-2X+3
+\]
+
+Find $Cov(X,Y)$.
+
+\subsection*{Step 1}
+
+\[
+Cov(X,Y)=E[XY]-E[X]E[Y]
+\]
+
+\subsection*{Step 2}
+
+\[
+XY=X(-2X+3)
+\]
+
+\[
+=-2X^2+3X
+\]
+
+\subsection*{Step 3}
+
+\[
+E[XY]=-2E[X^2]+3E[X]
+\]
+
+\[
+E[Y]=-2E[X]+3
+\]
+
+After simplification
+
+\[
+Cov(X,Y)=-2Var(X)
+\]
+
+This indicates a negative relationship between $X$ and $Y$.
+
+\section*{5. Pearson Correlation Coefficient}
+
+To remove units we normalize covariance.
+
+\[
+\rho_{XY}=\frac{Cov(X,Y)}{\sqrt{Var(X)Var(Y)}}
+\]
+
+or
+
+\[
+\rho_{XY}=\frac{Cov(X,Y)}{\sigma_X\sigma_Y}
+\]
+
+Range
+
+\[
+-1\le \rho_{XY}\le 1
+\]
+
+Interpretation
+
+\begin{itemize}
+\item $\rho_{XY}>0$ : positive correlation
+\item $\rho_{XY}<0$ : negative correlation
+\item $\rho_{XY}=0$ : no linear correlation
+\end{itemize}
+
+\section*{6. Jointly Gaussian Random Variables}
+
+A pair $(X,Y)$ is jointly Gaussian if
+
+\begin{itemize}
+\item the joint density has a bivariate Gaussian form
+\item the marginal distributions are Gaussian
+\end{itemize}
+
+\subsection*{Joint Gaussian PDF}
+
+\[
+f_{XY}(x,y)=
+\frac{1}{2\pi\sigma_X\sigma_Y\sqrt{1-\rho^2}}
+\exp
+\left(
+-\frac{1}{2(1-\rho^2)}
+\left[
+\left(\frac{x-\mu_X}{\sigma_X}\right)^2
++
+\left(\frac{y-\mu_Y}{\sigma_Y}\right)^2
+-
+2\rho
+\left(\frac{x-\mu_X}{\sigma_X}\right)
+\left(\frac{y-\mu_Y}{\sigma_Y}\right)
+\right]
+\right)
+\]
+
+where
+
+\begin{itemize}
+\item $\mu_X,\mu_Y$ are the means
+\item $\sigma_X,\sigma_Y$ are standard deviations
+\item $\rho$ is the correlation coefficient
+\end{itemize}
+
+\subsection*{Interpretation Example}
+
+Example variables
+
+\begin{itemize}
+\item $X$: Atmospheric CO$_2$ concentration (ppm)
+\item $Y$: Global surface temperature anomaly ($^\circ$C)
+\end{itemize}
+
+If
+
+\[
+\rho>0
+\]
+
+then higher CO$_2$ levels tend to occur with higher temperatures.
+
+\end{document}
