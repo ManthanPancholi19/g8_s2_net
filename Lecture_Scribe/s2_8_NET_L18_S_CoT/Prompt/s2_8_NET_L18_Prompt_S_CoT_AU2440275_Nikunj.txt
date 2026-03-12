@@ -1,0 +1,13 @@
+"Generate a lecture scribe suitable for exam preparation based ONLY on the provided context (Lecture 18 slides). The target audience is a student preparing for a closed-notes exam. 
+
+Instructions:
+
+Reason Step-by-Step: While writing the scribe, explicitly explain the reasoning behind definitions, assumptions, proofs, and example solutions exactly as presented in the provided context. Include this reasoning directly in the scribe text to help the student understand 'why' and 'how'.
+
+Faithfulness: Include definitions, notation, theorem statements, and worked examples exactly as they appear in the slides. Do not hallucinate or add information from outside the context.
+
+Logical Flow: Make the logical dependencies between concepts clear.
+
+Structure: Organize the content with clear headings and subheadings corresponding to the lecture flow.
+
+Goal: The output should allow a student to recall definitions, reconstruct proofs, and follow example solutions step-by-step."
