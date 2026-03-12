@@ -1,0 +1,8 @@
+{
+  "simulation_nodes": 5,
+  "cpu_frequency_range": [1.0, 2.5],
+  "bandwidth_base_mbps": 5.0,
+  "distance_range_m": [5, 50],
+  "stability_penalty": 1.2,
+  "saturation_threshold": 2.0
+}

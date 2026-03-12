@@ -1,0 +1,14 @@
+{
+  "AR_Task": {
+    "type": "M/G/1",
+    "distribution": "Gamma",
+    "params": { "alpha": 2.0, "beta": 1.5 },
+    "deadline_seconds": 0.8
+  },
+  "BeautyCam_Task": {
+    "type": "M/M/1",
+    "distribution": "Exponential",
+    "params": { "mu": 1.0 },
+    "deadline_seconds": 2.5
+  }
+}

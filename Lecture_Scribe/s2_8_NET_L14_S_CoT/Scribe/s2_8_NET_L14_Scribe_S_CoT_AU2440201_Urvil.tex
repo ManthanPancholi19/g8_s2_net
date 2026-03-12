@@ -1,0 +1,318 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{CSE 400: Fundamentals of Probability in Computing\\
+Tutorial 2 -- Lecture 14 \\ Exam-Oriented Lecture Scribe}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Tutorial Question 1}
+
+\textbf{Problem.}
+A point is chosen uniformly at random on a line segment of length $L$.  
+Find the probability that the ratio of the shorter to the longer segment is less than $1/4$.
+
+\textbf{Solution.}
+
+Let $X$ denote the distance of the chosen point from the left endpoint.  
+Since the point is chosen uniformly,
+\[
+X \sim \text{Uniform}(0,L).
+\]
+
+The two segment lengths are
+\[
+X \quad \text{and} \quad L-X.
+\]
+
+The ratio condition becomes
+\[
+\frac{\min(X,L-X)}{\max(X,L-X)} < \frac14.
+\]
+
+Consider symmetry about $L/2$.
+
+\textbf{Case 1:} $X \le L/2$  
+Shorter $=X$, longer $=L-X$,
+\[
+\frac{X}{L-X}<\frac14
+\Rightarrow 4X<L-X
+\Rightarrow 5X<L
+\Rightarrow X<\frac{L}{5}.
+\]
+
+\textbf{Case 2:} $X>L/2$  
+Shorter $=L-X$,
+\[
+\frac{L-X}{X}<\frac14
+\Rightarrow 4(L-X)<X
+\Rightarrow 4L<5X
+\Rightarrow X>\frac{4L}{5}.
+\]
+
+Hence favorable region:
+\[
+X\in\left(0,\frac{L}{5}\right)\cup\left(\frac{4L}{5},L\right).
+\]
+
+Probability:
+\[
+P=\frac{L/5+L/5}{L}=\frac{2}{5}.
+\]
+
+\textbf{Final Result:} $\boxed{2/5}$.
+
+\section*{Tutorial Question 2}
+
+\textbf{Problem.}
+White readings: $N(4,4)$, Black readings: $N(6,9)$.  
+Observed value = 5. Black region fraction = $\alpha$.  
+Find $\alpha$ such that error probabilities are equal.
+
+\textbf{Solution.}
+
+Equal error occurs when posterior probabilities are equal:
+\[
+P(\text{White}\mid 5)=P(\text{Black}\mid 5).
+\]
+
+Using Bayes rule proportionality,
+\[
+(1-\alpha)f_W(5)=\alpha f_B(5).
+\]
+
+Normal densities:
+\[
+f_W(5)=\frac{1}{\sqrt{8\pi}}
+e^{-(5-4)^2/8},
+\quad
+f_B(5)=\frac{1}{\sqrt{18\pi}}
+e^{-(5-6)^2/18}.
+\]
+
+Equating:
+\[
+(1-\alpha)\frac{1}{\sqrt{8\pi}}e^{-1/8}
+=\alpha\frac{1}{\sqrt{18\pi}}e^{-1/18}.
+\]
+
+Solve for $\alpha$:
+\[
+\frac{1-\alpha}{\alpha}
+=\sqrt{\frac{8}{18}}
+e^{\,(-1/18+1/8)}.
+\]
+
+\textbf{Final Result:} $\alpha$ obtained from above equality.
+
+\section*{Tutorial Question 3}
+
+\subsection*{(a) Uniform Fires on $(0,A)$}
+
+Minimize
+\[
+E|X-a|=\frac1A\int_0^A |x-a|dx.
+\]
+
+Split integral at $a$:
+\[
+\int_0^a (a-x)dx+\int_a^A(x-a)dx.
+\]
+
+Differentiate with respect to $a$ and set to zero:
+\[
+\frac{d}{da}E|X-a|=0
+\Rightarrow a=\frac{A}{2}.
+\]
+
+\textbf{Result:} Station at midpoint.
+
+\subsection*{(b) Exponential Fires}
+
+$X\sim \text{Exp}(\lambda)$.
+
+Minimize
+\[
+E|X-a|.
+\]
+
+Derivative condition gives
+\[
+P(X\le a)=\frac12.
+\]
+
+For exponential distribution:
+\[
+1-e^{-\lambda a}=\frac12
+\Rightarrow a=\frac{\ln 2}{\lambda}.
+\]
+
+\textbf{Result:} $\boxed{a=\frac{\ln 2}{\lambda}}$.
+
+\section*{Tutorial Question 4}
+
+Battery lifetime is exponential with rate $\lambda_i$ with probability $p_i$.
+
+We compute
+\[
+P(X>t+s\mid X>t).
+\]
+
+Using conditional probability:
+\[
+\frac{P(X>t+s)}{P(X>t)}.
+\]
+
+Mixture survival:
+\[
+P(X>t)=\sum_{i=1}^2 p_i e^{-\lambda_i t}.
+\]
+
+Thus
+\[
+P(X>t+s\mid X>t)
+=\frac{\sum p_i e^{-\lambda_i(t+s)}}
+{\sum p_i e^{-\lambda_i t}}.
+\]
+
+\section*{Tutorial Question 5}
+
+$X\sim \text{Poisson}(\lambda_1)$,  
+$Y\sim \text{Poisson}(\lambda_2)$ independent.
+
+Given total $X+Y=n$, find $P(X=k\mid X+Y=n)$.
+
+\[
+P(X=k\mid X+Y=n)
+=\frac{P(X=k,Y=n-k)}{P(X+Y=n)}.
+\]
+
+Substituting Poisson pmfs:
+\[
+=\binom{n}{k}
+\left(\frac{\lambda_1}{\lambda_1+\lambda_2}\right)^k
+\left(\frac{\lambda_2}{\lambda_1+\lambda_2}\right)^{n-k}.
+\]
+
+\textbf{Result:} Binomial$(n,\frac{\lambda_1}{\lambda_1+\lambda_2})$.
+
+\section*{Tutorial Question 6}
+
+$X\sim \text{Uniform}[-2,2]$, $Y=g(X)$ from graph.
+
+\textbf{Procedure:}
+\begin{itemize}
+\item Identify intervals where $g(x)$ is monotone.
+\item Express inverse mappings.
+\item Use
+\[
+F_Y(y)=P(g(X)\le y).
+\]
+\item Differentiate to obtain
+\[
+f_Y(y)=\frac{d}{dy}F_Y(y).
+\]
+\end{itemize}
+
+Graphs of $F_Y(y)$ and $f_Y(y)$ follow directly from piecewise mapping.
+
+\section*{Tutorial Question 7}
+
+Each period multiplies price by $u$ or $d$.
+
+Let $N$ = number of upward moves in 1000 periods.
+
+\[
+N\sim \text{Binomial}(1000,0.52).
+\]
+
+Price after 1000 periods:
+\[
+S=u^N d^{1000-N}.
+\]
+
+Condition for $30\%$ increase:
+\[
+u^N d^{1000-N}\ge1.3.
+\]
+
+Take logarithms to obtain threshold value of $N$.
+
+Approximate probability using normal approximation to binomial:
+\[
+N\approx N(1000p,1000p(1-p)).
+\]
+
+Compute
+\[
+P(N\ge N_0).
+\]
+
+\section*{Tutorial Question 8}
+
+Repair time $X\sim \text{Exp}(1/2)$.
+
+\subsection*{(a)}
+\[
+P(X>2)=e^{-(1/2)\cdot2}=e^{-1}.
+\]
+
+\subsection*{(b)}
+\[
+P(X\ge10\mid X\ge9)
+=\frac{P(X\ge10)}{P(X\ge9)}
+=\frac{e^{-5}}{e^{-4.5}}
+=e^{-0.5}.
+\]
+
+\section*{Tutorial Question 9}
+
+Let $Z=\sqrt{X^2+Y^2}$.
+
+Joint density:
+\[
+f_{X,Y}(x,y)=f_X(x)f_Y(y).
+\]
+
+Use transformation to polar coordinates:
+\[
+x=r\cos\theta,\quad y=r\sin\theta.
+\]
+
+Jacobian $=r$.
+
+Thus
+\[
+f_Z(z)=\int_0^{2\pi}
+f_X(z\cos\theta)f_Y(z\sin\theta)\, z\, d\theta.
+\]
+
+\section*{Tutorial Question 10}
+
+Let
+\[
+M_n=\max(X_1,\dots,X_n).
+\]
+
+Then
+\[
+P(M_n\le x)=F(x)^n.
+\]
+
+Joint distribution:
+\[
+P(M_n\le x, M_{n+1}\le y)
+=
+\begin{cases}
+F(x)^nF(y), & x\le y,\\
+F(y)^{n+1}, & y<x.
+\end{cases}
+\]
+
+This follows because $M_{n+1}=\max(M_n,X_{n+1})$.
+
+\end{document}
