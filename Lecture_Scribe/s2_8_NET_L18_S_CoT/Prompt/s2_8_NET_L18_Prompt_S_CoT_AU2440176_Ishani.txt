@@ -1,0 +1,195 @@
+🔹 ALTERNATE HIGH-PRECISION LECTURE SCRIBE PROMPT
+
+You are tasked with producing a FORMAL, EXAM-ORIENTED Lecture Scribe designed specifically for closed-notes university examinations, using ONLY the provided lecture material (Lecture 18 slides and associated content).
+
+▪️ PRIMARY OBJECTIVE
+
+Convert the given lecture into a document that is:
+
+Complete in conceptual coverage
+
+Mathematically exact
+
+Structurally organized
+
+Optimized for rapid exam revision
+
+This is NOT a summary task. You must reconstruct the lecture in full detail, preserving all technical depth and logical rigor.
+
+▪️ CONTENT CONSTRAINTS (MANDATORY)
+
+Use strictly and exclusively the provided lecture content
+
+Do NOT introduce:
+
+External definitions
+
+Additional examples
+
+Alternative explanations
+
+Do NOT omit:
+
+Any formula
+
+Any derivation
+
+Any intermediate reasoning step
+
+Maintain exact notation, symbols, and structure as given
+
+Rephrase only for clarity — never simplify away rigor
+
+Preserve all references to equations, tables, and figures (including slide-based structure)
+
+▪️ WRITING STYLE REQUIREMENTS
+
+Formal academic tone (no conversational language)
+
+No emojis, stylistic decorations, or informal markers
+
+No storytelling, intuition, or analogies unless explicitly present in slides
+
+Precise, concise, and structured exposition
+
+Maintain consistency in formatting and hierarchy
+
+▪️ MATHEMATICAL FORMATTING RULES
+
+All formulas must be presented in boxed plain-text format, exactly as:
+
+|--------------------------------|
+| Expression / Formula Here      |
+|--------------------------------|
+
+Guidelines:
+
+Keep formulas visually isolated from text
+
+Preserve original notation exactly
+
+Group related formulas logically
+
+Categorize clearly:
+
+Core definitions
+
+Derived expressions
+
+Properties
+
+▪️ DOCUMENT STRUCTURE
+1. Lecture Overview
+
+Enumerate all topics covered
+
+Reflect the exact progression of the lecture
+
+2. Topic-wise Detailed Reconstruction
+
+For each topic:
+
+(A) Definitions and Concepts
+
+State all definitions exactly
+
+Maintain original terminology
+
+(B) Formula Set
+
+Include ALL formulas (boxed)
+
+Preserve ordering and grouping
+
+(C) Derivations
+
+Present step-by-step derivations
+
+No skipped steps
+
+Each transformation must follow logically from the previous
+
+(D) Properties and Results
+
+List all properties explicitly
+
+Include conditions and assumptions
+
+(E) Problem-Solving Methodology
+
+Extract the exact solving approach demonstrated in lecture
+
+Present as structured steps
+
+3. Worked Examples
+
+For every example:
+
+State the problem exactly
+
+Identify the concept being applied
+
+Show complete step-by-step solution
+
+Include every intermediate calculation
+
+Clearly present final result
+
+Also include:
+
+Mistakes implied by the solution steps (if any)
+
+Key logical takeaways
+
+4. Final Revision Section
+(A) Formula Compendium
+
+All formulas only (boxed)
+
+No explanations
+
+(B) Core Concept Statements
+
+One-line precise statements
+
+(C) Standard Solution Patterns
+
+Recognizable problem-solving templates
+
+▪️ REASONING REQUIREMENT
+
+Expand every derivation and solution exactly as shown in the lecture
+
+Do not compress multi-step logic into single statements
+
+Do not add reasoning beyond what exists in the slides
+
+▪️ OUTPUT QUALITY CHECK
+
+The final document must:
+
+Fully cover the lecture (no missing content)
+
+Be mathematically correct and logically consistent
+
+Be usable as a standalone exam revision resource
+
+Reflect the structure and rigor of actual lecture delivery
+
+▪️ FINAL INSTRUCTION
+
+Do NOT simplify.
+Do NOT generalize.
+Do NOT add external knowledge.
+
+Produce a complete, structured, exam-ready lecture scribe based solely on the provided material.
+
+▪️ OUTPUT FORMAT
+
+Return the final output, properly structured with: 
+
+Sections and subsections
+
+Equation environments
+
+Clean formatting suitable for academic submission
