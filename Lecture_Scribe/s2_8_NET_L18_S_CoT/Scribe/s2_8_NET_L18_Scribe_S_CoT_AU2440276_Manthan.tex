@@ -1,0 +1,330 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{enumitem}
+
+\title{\textbf{CSE400 - Lecture 18} \\ \Large Marginal PMF, Correlation, Covariance, Joint Gaussian Random Variables}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{1. Lecture Overview}
+
+\textbf{Topics Covered}
+\begin{itemize}[noitemsep]
+    \item Marginal PMF
+    \begin{itemize}[noitemsep]
+        \item Definition
+        \item Marginal PMF from Joint PMF Table
+        \item Solved Example
+    \end{itemize}
+    \item Correlation
+    \item Covariance
+    \begin{itemize}[noitemsep]
+        \item Definition and Interpretation
+        \item Algebraic Form and Properties
+        \item Solved Examples
+    \end{itemize}
+    \item Pearson's Correlation Coefficient
+    \item Joint Gaussian Random Variables
+    \begin{itemize}[noitemsep]
+        \item Definition
+        \item Algebraic Form
+        \item Interpretation
+    \end{itemize}
+\end{itemize}
+
+\textbf{Logical Progression}
+\begin{itemize}[noitemsep]
+    \item Joint PMF $\rightarrow$ Marginal PMF (summation over variables)
+    \item $\rightarrow$ Product Moment $E[XY]$
+    \item $\rightarrow$ Centered Measure (Covariance)
+    \item $\rightarrow$ Normalized Measure (Pearson Coefficient)
+    \item $\rightarrow$ Continuous Joint Distribution (Gaussian Model)
+\end{itemize}
+
+\hrulefill
+
+\section*{2. Topic-wise Detailed Notes}
+
+\subsection*{2.1 Marginal PMF}
+
+\textbf{(A) Concept Explanation} \\
+For discrete random variables $X$ and $Y$, the joint PMF is defined as:
+\[ \boxed{p_{XY}(x,y)=P(X=x,Y=y)} \]
+\textbf{Key Idea:} The marginal PMF of one variable is obtained by summing the joint PMF over all possible values of the other variable.
+
+\textbf{(B) Key Formulas} \\
+\textit{Fundamental}
+\[ \boxed{p_{XY}(x,y)=P(X=x,Y=y)} \]
+\textit{Marginalization}
+\[ \boxed{p_{X}(x)=\sum_{y}p_{XY}(x,y)} \]
+\[ \boxed{p_{Y}(y)=\sum_{x}p_{XY}(x,y)} \]
+
+\textbf{(C) Derivation} \\
+From the law of total probability:
+\[ P(X=x)=\sum_{y}P(X=x,Y=y) \]
+Thus:
+\[ p_{X}(x)=\sum_{y}p_{XY}(x,y) \]
+Similarly:
+\[ p_{Y}(y)=\sum_{x}p_{XY}(x,y) \]
+
+\textbf{(D) Properties and Observations} \\
+From the table representation:
+\begin{itemize}[noitemsep]
+    \item Row sums give $p_{X}(x)$
+    \item Column sums give $p_{Y}(y)$
+\end{itemize}
+\[ \boxed{p_{X}(x_{i})=\sum_{j}p_{ij}} \]
+\[ \boxed{p_{Y}(y_{j})=\sum_{i}p_{ij}} \]
+Normalization:
+\[ \boxed{\sum_{i}p_{X}(x_{i})=1} \]
+\[ \boxed{\sum_{j}p_{Y}(y_{j})=1} \]
+
+\textbf{(E) Problem-Solving Framework}
+\begin{enumerate}[noitemsep]
+    \item Identify joint PMF table
+    \item Perform row-wise summation $\rightarrow p_{X}(x)$
+    \item Perform column-wise summation $\rightarrow p_{Y}(y)$
+    \item Verify total probability equals 1
+\end{enumerate}
+
+\subsection*{3. Question-wise Analysis: Marginal PMF Example}
+
+\textbf{Given} \\
+Joint PMF table:
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+$x \setminus y$ & 0 & 1 \\
+\hline
+0 & $1/8$ & $1/4$ \\
+\hline
+1 & $3/8$ & $1/4$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{Concept Being Tested} \\
+Extraction of marginal PMFs from joint PMF
+
+\textbf{Solution}
+\[ \boxed{p_{X}(0)=\frac{1}{8}+\frac{1}{4}=\frac{3}{8}} \]
+\[ \boxed{p_{X}(1)=\frac{3}{8}+\frac{1}{4}=\frac{5}{8}} \]
+\[ \boxed{p_{Y}(0)=\frac{1}{8}+\frac{3}{8}=\frac{1}{2}} \]
+\[ \boxed{p_{Y}(1)=\frac{1}{4}+\frac{1}{4}=\frac{1}{2}} \]
+
+\textbf{Final Answer}
+\[ p_{X}(x)=\begin{cases} 3/8, & x=0 \\ 5/8, & x=1 \end{cases} \quad \quad p_{Y}(y)=\begin{cases} 1/2, & y=0 \\ 1/2, & y=1 \end{cases} \]
+
+\textbf{Common Errors}
+\begin{itemize}[noitemsep]
+    \item Missing a term in summation
+    \item Confusing row and column aggregation
+\end{itemize}
+
+\hrulefill
+
+\subsection*{2.2 Correlation}
+
+\textbf{(A) Concept Explanation} \\
+A basic measure of joint behavior is the product moment:
+\[ \boxed{R_{XY}=E[XY]} \]
+\textbf{Interpretation:}
+\begin{itemize}[noitemsep]
+    \item Measures average value of product $XY$
+    \item Computed about the origin
+\end{itemize}
+
+\textbf{(D) Properties and Observations}
+\begin{itemize}[noitemsep]
+    \item Depends on scale of $X$ and $Y$
+    \item Combines: mean, spread, and dependence
+\end{itemize}
+\[ \boxed{R_{XY}=0 \implies \text{orthogonal about origin}} \]
+\textbf{Conclusion:} Not a clean measure of centered dependence.
+
+\textbf{(E) Transition} \\
+To eliminate mean effects $\rightarrow$ define covariance.
+
+\hrulefill
+
+\subsection*{2.3 Covariance}
+
+\textbf{(A) Concept Explanation} \\
+Covariance is defined as:
+\[ \boxed{Cov(X,Y)=E[(X-\mu_{X})(Y-\mu_{Y})]} \]
+\textbf{Interpretation:}
+\begin{itemize}[noitemsep]
+    \item $Cov(X,Y)>0$: deviations have same sign
+    \item $Cov(X,Y)<0$: deviations have opposite sign
+    \item $Cov(X,Y)=0$: no linear co-variation
+\end{itemize}
+\textbf{Important observation:} Magnitude depends on units cannot measure strength directly.
+
+\textbf{(B) Key Formulas} \\
+\textit{Derived Form}
+\[ \boxed{Cov(X,Y)=E[XY]-E[X]E[Y]} \]
+
+\textbf{(C) Derivation} 
+\begin{align*}
+Cov(X,Y) &= E[(X-\mu_{X})(Y-\mu_{Y})] \\
+&= E[XY-X\mu_{Y}-Y\mu_{X}+\mu_{X}\mu_{Y}] \\
+&= E[XY]-\mu_{Y}E[X]-\mu_{X}E[Y]+\mu_{X}\mu_{Y}
+\end{align*}
+Since $\mu_{X}=E[X]$, $\mu_{Y}=E[Y]$:
+\[ Cov(X,Y) = E[XY]-\mu_{X}\mu_{Y} \]
+
+\textbf{(D) Properties} \\
+\textit{Symmetry}
+\[ \boxed{Cov(X,Y)=Cov(Y,X)} \]
+\textit{Variance as Special Case}
+\[ \boxed{Cov(X,X)=Var(X)} \]
+\textit{Linearity}
+\[ \boxed{Cov(aX+b,cY+d)=ac~Cov(X,Y)} \]
+\textit{Independence}
+\[ \boxed{X \perp Y \implies Cov(X,Y)=0} \]
+\textbf{Important Statement:} Zero covariance means uncorrelated, but does not imply independence.
+
+\textbf{(E) Problem-Solving Framework}
+\begin{enumerate}[noitemsep]
+    \item Use shortcut formula: $Cov(X,Y)=E[XY]-E[X]E[Y]$
+    \item Compute expectations
+    \item Substitute
+    \item Simplify
+\end{enumerate}
+
+\subsection*{3. Question-wise Analysis: Covariance Example 1}
+
+\textbf{Given} \\
+$Y=-2X+3$
+
+\textbf{Concept Being Tested} \\
+Covariance under linear transformation
+
+\textbf{Solution}
+\[ \boxed{Cov(X,Y)=E[XY]-E[X]E[Y]} \]
+\textbf{Step 1:}
+\[ XY = X(-2X+3) = -2X^{2}+3X \]
+\textbf{Step 2:}
+\[ E[Y] = -2E[X]+3 \]
+\textbf{Step 3:}
+\begin{align*}
+Cov(X,Y) &= E[-2X^{2}+3X]-E[X](-2E[X]+3) \\
+&= -2E[X^{2}]+3E[X]+2(E[X])^{2}-3E[X] \\
+&= -2E[X^{2}]+2(E[X])^{2}
+\end{align*}
+Using:
+\[ \boxed{Var(X)=E[X^{2}]-(E[X])^{2}} \]
+\textbf{Final:}
+\[ \boxed{Cov(X,Y)=-2~Var(X)} \]
+
+\textbf{Key Insight} \\
+Covariance scales linearly with transformation coefficients.
+
+\hrulefill
+
+\subsection*{2.4 Pearson's Correlation Coefficient}
+
+\textbf{(A) Concept Explanation} \\
+Pearson's coefficient measures strength and direction of linear relationship:
+\[ \boxed{\rho_{XY}=\frac{Cov(X,Y)}{\sqrt{Var(X)Var(Y)}}} \]
+
+\textbf{(D) Properties}
+\[ \boxed{-1 \le \rho_{XY} \le 1} \]
+\begin{itemize}[noitemsep]
+    \item Normalized covariance
+    \item Unit-free
+    \item Measures both strength and direction
+\end{itemize}
+
+\textbf{Interpretation}
+\[ \boxed{\rho_{XY}>0 \implies \text{positive linear trend}} \]
+\[ \boxed{\rho_{XY}<0 \implies \text{negative linear trend}} \]
+\[ \boxed{\rho_{XY}=0 \implies \text{no linear correlation}} \]
+
+\hrulefill
+
+\subsection*{2.5 Example 2}
+
+\textbf{Given}
+\[ \boxed{f_{XY}(x,y)=\frac{xy}{96}, \quad 0<x<4, \quad 1<y<5} \]
+
+\textbf{Computations} \\
+\textit{Expectations}
+\[ \boxed{E[X]=\frac{8}{3}} \]
+\[ \boxed{E[Y]=\frac{31}{9}} \]
+\[ \boxed{E[XY]=\frac{248}{27}} \]
+\textit{Linear Expectation}
+\[ \boxed{E[2X+3Y]=\frac{47}{3}} \]
+\textit{Variances}
+\[ \boxed{Var(X)=\frac{8}{9}} \]
+\[ \boxed{Var(Y)=\frac{92}{81}} \]
+\textit{Covariance}
+\[ \boxed{Cov(X,Y)=0} \]
+\textit{Pearson Coefficient}
+\[ \boxed{\rho_{XY}=0} \]
+
+\hrulefill
+
+\subsection*{2.6 Joint Gaussian Random Variables}
+
+\textbf{(A) Concept Explanation} \\
+A pair $(X, Y)$ is jointly Gaussian if:
+\begin{itemize}[noitemsep]
+    \item Joint PDF is Gaussian
+    \item Marginals are Gaussian
+\end{itemize}
+\textbf{Applications:} Signal processing, Communication systems, Noisy measurements.
+
+\textbf{(B) Key Formula}
+\[ \boxed{f_{XY}(x,y)=\frac{1}{2\pi\sigma_{X}\sigma_{Y}\sqrt{1-\rho^{2}}}\exp\left(\frac{-1}{2(1-\rho^{2})}\left[\left(\frac{x-\mu_{X}}{\sigma_{X}}\right)^{2}+\left(\frac{y-\mu_{Y}}{\sigma_{Y}}\right)^{2}-2\rho\left(\frac{x-\mu_{X}}{\sigma_{X}}\right)\left(\frac{y-\mu_{Y}}{\sigma_{Y}}\right)\right]\right)} \]
+
+\textbf{(D) Parameters}
+\begin{itemize}[noitemsep]
+    \item $\mu_{X}, \mu_{Y}$: means
+    \item $\sigma_{X}, \sigma_{Y}$: standard deviations
+    \item $\rho$: correlation coefficient
+\end{itemize}
+
+\textbf{(E) Interpretation} \\
+If $\rho>0$: Higher values of one variable tend to correspond to higher values of the other.
+
+\hrulefill
+
+\section*{4. Final Revision Section}
+
+\textbf{(A) Complete Formula Sheet}
+\[ \boxed{p_{X}(x)=\sum_{y}p_{XY}(x,y)} \]
+\[ \boxed{p_{Y}(y)=\sum_{x}p_{XY}(x,y)} \]
+\[ \boxed{R_{XY}=E[XY]} \]
+\[ \boxed{Cov(X,Y)=E[(X-\mu_{X})(Y-\mu_{Y})]} \]
+\[ \boxed{Cov(X,Y)=E[XY]-E[X]E[Y]} \]
+\[ \boxed{Cov(X,X)=Var(X)} \]
+\[ \boxed{Cov(aX+b,cY+d)=ac~Cov(X,Y)} \]
+\[ \boxed{\rho_{XY}=\frac{Cov(X,Y)}{\sqrt{Var(X)Var(Y)}}} \]
+\[ \boxed{-1 \le \rho_{XY} \le 1} \]
+
+\textbf{(B) Key Concept Summary}
+\begin{itemize}[noitemsep]
+    \item Marginal PMF obtained via summation over other variable
+    \item Correlation measures raw product moment
+    \item Covariance measures centered dependence
+    \item Pearson coefficient normalizes covariance
+    \item Joint Gaussian models continuous dependence
+\end{itemize}
+
+\textbf{(C) Standard Problem Patterns}
+\begin{itemize}[noitemsep]
+    \item Joint PMF $\rightarrow$ Marginal extraction
+    \item Expectation computation (sum/integration)
+    \item Covariance using shortcut formula
+    \item Linear transformation problems
+    \item Gaussian parameter interpretation
+\end{itemize}
+
+\end{document}
