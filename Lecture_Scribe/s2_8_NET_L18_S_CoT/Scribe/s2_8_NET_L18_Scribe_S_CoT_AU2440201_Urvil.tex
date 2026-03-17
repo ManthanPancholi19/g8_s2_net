@@ -1,0 +1,300 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{CSE400 Lecture 18 Scribe\\
+Marginal PMF, Correlation, Covariance, Joint Gaussian RVs}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Marginal PMF}
+
+\subsection{Definition}
+
+The marginal PMF of one variable is obtained by summing the joint PMF over all possible values of the other variable.
+
+Let $X$ and $Y$ be discrete random variables with joint PMF $p_{X,Y}(x,y)$.
+
+\begin{align*}
+p_X(x) &= \sum_{y} p_{X,Y}(x,y) \\
+p_Y(y) &= \sum_{x} p_{X,Y}(x,y)
+\end{align*}
+
+\subsection{Procedure from Joint PMF Table}
+
+Given a joint PMF table:
+
+\begin{enumerate}
+    \item Fix a value of $x$
+    \item Sum probabilities across all $y$
+    \item Repeat for all $x$
+    \item Similarly, fix $y$ and sum across all $x$
+\end{enumerate}
+
+\subsection{Verification Condition}
+
+\[
+\sum_x p_X(x) = 1, \quad \sum_y p_Y(y) = 1
+\]
+
+\subsection{Observation}
+
+Marginalization removes dependence on one variable by summing over its full support.
+
+\section{Correlation}
+
+\subsection{Definition}
+
+\[
+R_{XY} = \mathbb{E}[XY]
+\]
+
+\subsection{Continuous Case Expansion}
+
+\[
+R_{XY} = \int \int xy f_{X,Y}(x,y)\,dx\,dy
+\]
+
+\subsection{Interpretation}
+
+\begin{itemize}
+    \item Measures average product of $X$ and $Y$
+    \item Represents joint behavior about the origin
+\end{itemize}
+
+\subsection{Limitations}
+
+\begin{enumerate}
+    \item Sensitive to scaling of variables
+    \item Does not remove mean effects
+    \item Combines:
+    \begin{itemize}
+        \item Mean
+        \item Variance
+        \item Dependence
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Special Case}
+
+\[
+R_{XY} = 0 \Rightarrow \text{Orthogonal about origin}
+\]
+
+\section{Covariance}
+
+\subsection{Definition}
+
+\[
+\text{Cov}(X,Y) = \mathbb{E}[(X - \mathbb{E}[X])(Y - \mathbb{E}[Y])]
+\]
+
+\subsection{Detailed Expansion}
+
+\begin{align*}
+(X - \mathbb{E}[X])(Y - \mathbb{E}[Y]) 
+&= XY - X\mathbb{E}[Y] - Y\mathbb{E}[X] + \mathbb{E}[X]\mathbb{E}[Y]
+\end{align*}
+
+Taking expectation:
+
+\begin{align*}
+\text{Cov}(X,Y) 
+&= \mathbb{E}[XY] - \mathbb{E}[X\mathbb{E}[Y]] - \mathbb{E}[Y\mathbb{E}[X]] + \mathbb{E}[\mathbb{E}[X]\mathbb{E}[Y]] \\
+&= \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y] - \mathbb{E}[Y]\mathbb{E}[X] + \mathbb{E}[X]\mathbb{E}[Y] \\
+&= \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]
+\end{align*}
+
+\subsection{Interpretation}
+
+\begin{itemize}
+    \item Measures joint variation of centered variables
+    \item Positive: variables increase/decrease together
+    \item Negative: one increases while other decreases
+\end{itemize}
+
+\subsection{Properties (Expanded)}
+
+\begin{enumerate}
+    \item \textbf{Symmetry}
+    \[
+    \text{Cov}(X,Y) = \text{Cov}(Y,X)
+    \]
+
+    \item \textbf{Variance}
+    \[
+    \text{Var}(X) = \text{Cov}(X,X)
+    \]
+
+    \item \textbf{Linearity in Each Argument}
+    \[
+    \text{Cov}(aX + b, Y) = a \cdot \text{Cov}(X,Y)
+    \]
+    \[
+    \text{Cov}(X, cY + d) = c \cdot \text{Cov}(X,Y)
+    \]
+
+    \item \textbf{Independence}
+    \[
+    X \perp Y \Rightarrow \mathbb{E}[XY] = \mathbb{E}[X]\mathbb{E}[Y]
+    \Rightarrow \text{Cov}(X,Y) = 0
+    \]
+\end{enumerate}
+
+\subsection{Important Remark}
+
+Zero covariance implies uncorrelated variables, but does not imply independence.
+
+\subsection{Example 1 (Detailed Structure)}
+
+\begin{enumerate}
+    \item Start with:
+    \[
+    \text{Cov}(X,Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]
+    \]
+
+    \item Compute $\mathbb{E}[X]$:
+    \[
+    \mathbb{E}[X] = \sum_x x p_X(x)
+    \]
+
+    \item Compute $\mathbb{E}[Y]$:
+    \[
+    \mathbb{E}[Y] = \sum_y y p_Y(y)
+    \]
+
+    \item Compute $\mathbb{E}[XY]$:
+    \[
+    \mathbb{E}[XY] = \sum_x \sum_y xy\, p_{X,Y}(x,y)
+    \]
+
+    \item Substitute values
+
+    \item Simplify algebraically
+
+    \item Obtain final value
+\end{enumerate}
+
+\section{Pearson’s Correlation Coefficient}
+
+\subsection{Definition}
+
+\[
+\rho_{XY} = \frac{\text{Cov}(X,Y)}{\sqrt{\text{Var}(X)} \sqrt{\text{Var}(Y)}}
+\]
+
+\subsection{Expanded Interpretation}
+
+\begin{itemize}
+    \item Normalizes covariance
+    \item Removes unit dependence
+    \item Captures linear relationship strength
+\end{itemize}
+
+\subsection{Properties}
+
+\begin{itemize}
+    \item Unit-free
+    \item Based on centered variables
+    \item Reflects direction (positive/negative)
+\end{itemize}
+
+\section{Example 2 (Detailed Continuous Case)}
+
+Given joint PDF $f_{X,Y}(x,y)$:
+
+\subsection{Step 1: Marginals}
+
+\[
+f_X(x) = \int f_{X,Y}(x,y)\,dy
+\]
+
+\[
+f_Y(y) = \int f_{X,Y}(x,y)\,dx
+\]
+
+\subsection{Step 2: Expectations}
+
+\[
+\mathbb{E}[X] = \int x f_X(x)\,dx
+\]
+
+\[
+\mathbb{E}[Y] = \int y f_Y(y)\,dy
+\]
+
+\subsection{Step 3: Product Moment}
+
+\[
+\mathbb{E}[XY] = \int \int xy f_{X,Y}(x,y)\,dx\,dy
+\]
+
+\subsection{Step 4: Covariance}
+
+\[
+\text{Cov}(X,Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]
+\]
+
+\subsection{Step 5: Final Simplification}
+
+Evaluate integrals step-by-step and substitute into covariance expression.
+
+\section{Jointly Gaussian Random Variables}
+
+\subsection{Definition}
+
+A pair $(X,Y)$ is jointly Gaussian if:
+
+\begin{itemize}
+    \item The joint density has a bivariate Gaussian form
+    \item Marginal distributions are Gaussian
+\end{itemize}
+
+\subsection{Interpretation}
+
+Joint Gaussian distributions arise when multiple independent random effects combine.
+
+\subsection{Algebraic Form (Structure)}
+
+Joint density depends on:
+\begin{itemize}
+    \item Means of $X$ and $Y$
+    \item Variances
+    \item Covariance
+\end{itemize}
+
+\subsection{Observation}
+
+Dependence structure is completely characterized by covariance.
+
+\subsection{Applications}
+
+\begin{itemize}
+    \item Signal processing
+    \item Communication systems
+    \item Modeling noisy measurements
+\end{itemize}
+
+\subsection{Example (Lecture)}
+
+Let:
+\begin{itemize}
+    \item $X$: Atmospheric CO$_2$ concentration
+    \item $Y$: Temperature anomaly
+\end{itemize}
+
+Due to multiple contributing random processes:
+\begin{itemize}
+    \item Solar radiation
+    \item Ocean circulation
+    \item Emissions
+    \item Weather variability
+\end{itemize}
+
+The joint behavior is approximated using a joint Gaussian model.
+
+\end{document}
