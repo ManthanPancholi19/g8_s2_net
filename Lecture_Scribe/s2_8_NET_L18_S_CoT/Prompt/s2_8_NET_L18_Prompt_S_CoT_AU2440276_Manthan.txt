@@ -1,0 +1,146 @@
+You are generating a HIGH-PRECISION Lecture Scribe for CLOSED-NOTES EXAM PREPARATION using ONLY the uploaded Lecture PPT (and tutorial, if provided).
+
+The output must be academically rigorous, cleanly formatted, and indistinguishable from high-quality university lecture notes prepared by a top-performing 2nd-year B.Tech student.
+
+-----------------------------------
+CORE OBJECTIVE
+-----------------------------------
+Transform the lecture material into a:
+• Conceptually complete
+• Mathematically rigorous
+• Logically structured
+• Exam-ready document
+
+Do NOT summarize. Extract, reorganize, and present all concepts, derivations, and formulas with full clarity and precision.
+
+-----------------------------------
+STRICT CONTENT RULES
+-----------------------------------
+1. Use ONLY the uploaded material.
+2. Do NOT introduce external knowledge or examples.
+3. Do NOT omit any concept, formula, or derivation.
+4. Preserve notation, symbols, and equation structure exactly.
+5. Rephrase for clarity, but do not dilute technical depth.
+6. Explicitly reference any equation numbers or figures mentioned.
+
+-----------------------------------
+FORMATTING STYLE (CRITICAL)
+-----------------------------------
+• The document must appear academic and formal.
+• NO emojis, icons, decorative symbols, or ChatGPT-style markers.
+• Use clean section headings and consistent indentation.
+• Avoid conversational tone — maintain formal academic language.
+• Avoid unnecessary verbosity.
+
+-----------------------------------
+FORMULA PRESENTATION (VERY IMPORTANT)
+-----------------------------------
+ALL formulas must be presented in clean boxed mathematical format as follows:
+
+
+
+
+
+|--------------------------------|
+| Cov(X, Y) = Cov(Y, X)          |
+-----------------------------------
+
+
+
+
+|--------------------------------|
+| Cov(X, X) = Var(X)             |
+-----------------------------------
+
+Rules:
+• Use plain text box structures (like above), NOT symbols like ⬛ or emojis
+• Keep formulas centered and clearly separated from text
+• Maintain exact mathematical notation from the lecture
+• Group related formulas together
+• Clearly distinguish between:
+  - Fundamental formulas
+  - Derived results
+  - Properties
+
+-----------------------------------
+OUTPUT STRUCTURE
+-----------------------------------
+
+1. Lecture Overview
+• List all topics covered
+• Show logical progression of concepts
+
+-----------------------------------
+
+2. Topic-wise Detailed Notes
+
+For each topic:
+
+(A) Concept Explanation
+• Precise and concise explanation
+• Include all definitions from the lecture
+
+(B) Key Formulas
+• Present ALL formulas in boxed format (as defined above)
+
+(C) Derivations
+• Step-by-step logical derivations
+• No skipped steps
+• Each transformation must be justified
+
+(D) Properties and Observations
+• List all important properties
+• Clearly state assumptions (independence, distributions, etc.)
+
+(E) Problem-Solving Framework
+• General method to solve problems from this topic
+• Based strictly on lecture content
+
+-----------------------------------
+
+3. Question-wise Analysis (if applicable)
+
+For each question:
+
+• Concept being tested  
+• Relevant formulas (boxed)  
+• Step-by-step solution  
+• Logical justification of each step  
+• Final answer  
+
+Also include:
+• Common errors (based on lecture logic only)
+• Key solving insights
+
+-----------------------------------
+
+4. Final Revision Section
+
+(A) Complete Formula Sheet
+• All formulas grouped and boxed
+• No explanations — formulas only
+
+(B) Key Concept Summary
+• One-line precise statements
+
+(C) Standard Problem Patterns
+• Recognizable solving structures
+
+-----------------------------------
+QUALITY REQUIREMENTS
+-----------------------------------
+The output must:
+• Cover 100% of the lecture content
+• Be mathematically precise and error-free
+• Be structured for fast revision
+• Contain no informal or AI-like stylistic elements
+• Be suitable as a standalone exam preparation document
+
+-----------------------------------
+FINAL INSTRUCTION
+-----------------------------------
+Do NOT simplify excessively.
+Do NOT skip reasoning.
+Do NOT add external material.
+
+Your goal is to produce a clean, formal, academically rigorous lecture scribe suitable for university-level examination preparation.
