@@ -1,0 +1,167 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+
+\geometry{margin=1in}
+
+\begin{document}
+
+\section*{Lecture 18: Marginal PMF, Correlation, Covariance, and Jointly Gaussian RVs}
+
+\textbf{Course:} CSE400 – Fundamentals of Probability in Computing \\
+\textbf{Lecturer:} Dhaval Patel, PhD \\
+\textbf{Date:} March 12, 2026
+
+\subsection*{1. Marginal Probability Mass Function (PMF)}
+For discrete random variables $X$ and $Y$, the joint PMF is defined as the probability that both events occur simultaneously: $p_{XY}(x,y) = P(X=x, Y=y)$.
+
+\subsubsection*{1.1 Definition}
+The marginal PMF of one variable is obtained by summing the joint PMF over all possible values of the other variable.
+
+Marginal PMF of $X$: $p_{X}(x) = \sum_{y} p_{XY}(x,y)$.
+
+Marginal PMF of $Y$: $p_{Y}(y) = \sum_{x} p_{XY}(x,y)$.
+
+\subsubsection*{1.2 Extraction from a Joint PMF Table}
+When data is organized in a table, the marginal probabilities are found at the boundaries:
+\begin{itemize}
+    \item \textbf{Row Sums:} Summing across a row for a specific $x_i$ gives $p_X(x_i)$.
+    \item \textbf{Column Sums:} Summing down a column for a specific $y_j$ gives $p_Y(y_j)$.
+    \item \textbf{Verification:} The sum of all marginal probabilities for $X$ must equal 1 ($\sum_{i} p_{X}(x_{i}) = 1$), and the same applies to $Y$ ($\sum_{j} p_{Y}(y_{j}) = 1$).
+\end{itemize}
+
+\subsubsection*{1.3 Worked Example}
+Given the joint PMF $p_{XY}(x,y)$:
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+$p_{XY}(x,y)$ & $y=0$ & $y=1$ \\ \hline
+$x=0$ & $1/8$ & $1/4$ \\ \hline
+$x=1$ & $3/8$ & $1/4$ \\ \hline
+\end{tabular}
+\end{center}
+
+\textbf{Step-by-Step Calculation:}
+\begin{itemize}
+    \item $p_X(0)$: Sum the first row $\rightarrow 1/8 + 1/4 = 3/8$.
+    \item $p_X(1)$: Sum the second row $\rightarrow 3/8 + 1/4 = 5/8$.
+    \item $p_Y(0)$: Sum the first column $\rightarrow 1/8 + 3/8 = 1/2$.
+    \item $p_Y(1)$: Sum the second column $\rightarrow 1/4 + 1/4 = 1/2$.
+\end{itemize}
+
+\textbf{Final Marginal Distributions:}
+\begin{itemize}
+    \item $p_{X}(x) = \begin{cases} 3/8, & x=0 \\ 5/8, & x=1 \end{cases}$
+    \item $p_{Y}(y) = \begin{cases} 1/2, & y=0 \\ 1/2, & y=1 \end{cases}$
+\end{itemize}
+
+\subsection*{2. Correlation}
+Correlation is a basic method to measure joint behavior through the "product moment".
+
+\subsubsection*{2.1 Definition}
+In the continuous case, the raw correlation $R_{XY}$ is defined as the expected value of the product $XY$:
+$$R_{XY} = E[XY] = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} xy \, f_{XY}(x,y) \, dx \, dy$$
+
+\subsubsection*{2.2 Interpretation and Limitations}
+\begin{itemize}
+    \item It indicates the average value of the product $XY$.
+    \item Because it is computed about the origin rather than the means, it mixes together mean values, spread (variance), and dependence.
+    \item If $R_{XY} = 0$, the variables are considered "orthogonal about the origin".
+\end{itemize}
+
+\subsection*{3. Covariance}
+To remove the influence of the means and isolate how variables vary together, we center the variables first.
+
+\subsubsection*{3.1 Definition and Interpretation}
+$$Cov(X,Y) = E[(X-\mu_X)(Y-\mu_Y)]$$
+Where $\mu_X = E[X]$ and $\mu_Y = E[Y]$.
+
+\begin{itemize}
+    \item \textbf{Positive Covariance ($Cov(X,Y) > 0$):} Deviations from the mean tend to have the same sign. For example, as study hours increase, GPA tends to increase.
+    \item \textbf{Negative Covariance ($Cov(X,Y) < 0$):} One variable tends to increase when the other decreases; deviations have opposite signs. For example, as TV watching increases, GPA tends to decrease.
+    \item \textbf{Zero Covariance ($Cov(X,Y) = 0$):} No linear co-variation trend exists. For example, there is no clear relationship between number of pets owned and GPA.
+\end{itemize}
+\textbf{Limitation:} The magnitude depends on the units of the variables and cannot be used to assess the strength of the relationship.
+
+\subsubsection*{3.2 Algebraic Derivation}
+The computational form is derived by expanding the definition:
+\begin{align*}
+Cov(X,Y) &= E[(X-\mu_X)(Y-\mu_Y)] \\
+&= E[XY - X\mu_{Y} - \mu_{X}Y + \mu_{X}\mu_{Y}] \\
+&= E[XY] - \mu_{Y}E[X] - \mu_{X}E[Y] + \mu_{X}\mu_{Y} \\
+&= E[XY] - \mu_{Y}\mu_{X} - \mu_{X}\mu_{Y} + \mu_{X}\mu_{Y} \\
+&= E[XY] - E[X]E[Y]
+\end{align*}
+
+\subsubsection*{3.3 Properties}
+\begin{itemize}
+    \item \textbf{Symmetry:} $Cov(X,Y) = Cov(Y,X)$.
+    \item \textbf{Variance as a Special Case:} $Cov(X,X) = Var(X)$.
+    \item \textbf{Linearity with Constants:} $Cov(aX+b, cY+d) = ac \, Cov(X,Y)$.
+    \item \textbf{Independence:} $X \perp Y \Rightarrow Cov(X,Y) = 0$. Note: Zero covariance (uncorrelated) does not generally imply independence.
+\end{itemize}
+
+\subsubsection*{3.4 Worked Example 1 (Linear Relation)}
+\textbf{Problem:} If $Y = -2X + 3$, find $Cov(X,Y)$.\\
+\textbf{Solution Step-by-Step:}
+\begin{itemize}
+    \item \textbf{Expressions:} Given $Y = -2X + 3$, then $XY = X(-2X + 3) = -2X^2 + 3X$.
+    \item \textbf{Expectation of Y:} $E[Y] = E[-2X + 3] = -2E[X] + 3$.
+\end{itemize}
+Substitute into $Cov(X,Y) = E[XY] - E[X]E[Y]$:
+\begin{align*}
+Cov(X,Y) &= E[-2X^2 + 3X] - E[X](-2E[X] + 3) \\
+&= -2E[X^2] + 3E[X] + 2(E[X])^2 - 3E[X] \\
+&= -2E[X^2] + 2(E[X])^2 \\
+&= -2[E[X^2] - (E[X])^2]
+\end{align*}
+\textbf{Final Result:} Since $Var(X) = E[X^2] - (E[X])^2$, then $Cov(X,Y) = -2 \, Var(X)$.
+
+\subsection*{4. Pearson's Correlation Coefficient ($\rho_{XY}$)}
+Pearson's coefficient is a normalized, unit-free version of covariance measuring both the direction and strength of a linear relationship.
+
+\subsubsection*{4.1 Definition}
+$$\rho_{XY} = \frac{Cov(X,Y)}{\sigma_{X}\sigma_{Y}} = \frac{Cov(X,Y)}{\sqrt{Var(X)Var(Y)}}$$
+\textbf{Range:} $-1 \le \rho_{XY} \le 1$.
+
+\textbf{Interpretations:}
+\begin{itemize}
+    \item $\rho_{XY} > 0$: Positive linear trend. $\rho_{XY} = +1$ is a perfect positive correlation.
+    \item $\rho_{XY} < 0$: Negative linear trend. $\rho_{XY} = -1$ is a perfect negative correlation.
+    \item $\rho_{XY} = 0$: No linear correlation. Note: A non-linear relationship can still exist even if $\rho_{XY} = 0$.
+\end{itemize}
+
+\subsection*{5. Worked Example 2 (Continuous PDF)}
+\textbf{Problem:} Given $f_{XY}(x,y) = \begin{cases} \frac{xy}{96}, & 0 < x < 4, 1 < y < 5 \\ 0, & \text{otherwise} \end{cases}$.
+
+\textbf{Step-by-Step Reasoning:}
+\begin{itemize}
+    \item $E[X]$: $\int_{0}^{4} x \cdot f_X(x) dx = \int_{0}^{4} x \cdot \frac{x}{8} dx = \frac{1}{8}[\frac{x^3}{3}]_0^4 = \frac{8}{3}$.
+    \item $E[Y]$: $\int_{1}^{5} y \cdot f_Y(y) dy = \int_{1}^{5} y \cdot \frac{y}{12} dy = \frac{1}{12}[\frac{y^3}{3}]_1^5 = \frac{31}{9}$.
+    \item $E[XY]$: Because $X$ and $Y$ are independent, $E[XY] = E[X]E[Y] = \frac{8}{3} \cdot \frac{31}{9} = \frac{248}{27}$.
+    \item $E[2X+3Y]$: By linearity, $2E[X] + 3E[Y] = 2(\frac{8}{3}) + 3(\frac{31}{9}) = \frac{16}{3} + \frac{31}{3} = \frac{47}{3}$.
+    \item $Var(X)$: $E[X^2] - (E[X])^2 = 8 - (\frac{8}{3})^2 = \frac{72-64}{9} = \frac{8}{9}$.
+    \item $Var(Y)$: $E[Y^2] - (E[Y])^2 = 13 - (\frac{31}{9})^2 = \frac{1053-961}{81} = \frac{92}{81}$.
+    \item $Cov(X,Y)$: $E[XY] - E[X]E[Y] = \frac{248}{27} - (\frac{8}{3} \cdot \frac{31}{9}) = 0$.
+    \item $\rho_{XY}$: Since $Cov(X,Y) = 0$, then $\rho_{XY} = 0$.
+\end{itemize}
+
+\subsection*{6. Jointly Gaussian Random Variables}
+\subsubsection*{6.1 Definition}
+A pair $(X, Y)$ is jointly Gaussian if its joint density follows the bivariate Gaussian form and the marginals are Gaussian: $X \sim N(\mu_X, \sigma_X^2)$ and $Y \sim N(\mu_Y, \sigma_Y^2)$. It is widely used in signal processing and communication systems.
+
+\subsubsection*{6.2 Joint PDF Formula}
+$$f_{X,Y}(x,y) = \frac{1}{2\pi\sigma_{X}\sigma_{Y}\sqrt{1-\rho^2}} \exp \left( -\frac{1}{2(1-\rho^2)} \left[ \left(\frac{x-\mu_X}{\sigma_X}\right)^2 + \left(\frac{y-\mu_Y}{\sigma_Y}\right)^2 - 2\rho \left(\frac{x-\mu_X}{\sigma_X}\right) \left(\frac{y-\mu_Y}{\sigma_Y}\right) \right] \right)$$
+
+\subsubsection*{6.3 Physical Application (Climate Example)}
+Consider $X$ as Atmospheric $CO_2$ and $Y$ as Global surface temperature anomaly.
+\begin{itemize}
+    \item \textbf{Means ($\mu_X, \mu_Y$):} Average $CO_2$ and temperature anomaly.
+    \item \textbf{Variability ($\sigma_X, \sigma_Y$):} Natural variability in $CO_2$ and temperature.
+    \item \textbf{Correlation ($\rho$):} If $\rho > 0$, higher $CO_2$ levels tend to occur with higher temperatures.
+\end{itemize}
+
+\end{document}
