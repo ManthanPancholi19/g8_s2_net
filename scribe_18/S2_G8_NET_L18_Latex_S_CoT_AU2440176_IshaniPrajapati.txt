@@ -1,0 +1,247 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{setspace}
+\geometry{margin=1in}
+\setstretch{1.2}
+
+\title{\textbf{Lecture 18: Marginal PMF, Correlation, Covariance, Joint Gaussian Random Variables}}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Lecture Overview}
+
+The lecture proceeds in the following order:
+
+\begin{enumerate}
+    \item Marginal PMF
+    \begin{itemize}
+        \item Definition
+        \item Marginal PMF from a Joint PMF Table
+        \item Solved Example
+    \end{itemize}
+    \item Correlation
+    \begin{itemize}
+        \item Definition
+        \item Interpretation
+    \end{itemize}
+    \item Covariance
+    \begin{itemize}
+        \item Definition and interpretation
+        \item Algebraic form and properties
+        \item Solved examples
+        \item Pearson’s Coefficient
+    \end{itemize}
+    \item Joint Gaussian Random Variables
+    \begin{itemize}
+        \item Definition and intuition
+        \item Algebraic form and interpretation
+    \end{itemize}
+\end{enumerate}
+
+\section{Marginal PMF}
+
+\subsection{Definitions and Concepts}
+
+\[
+\fbox{$ p_{XY}(x,y) = P(X=x, Y=y) $}
+\]
+
+\[
+\fbox{$ p_X(x) = \sum_{y} p_{XY}(x,y) $}
+\]
+
+\[
+\fbox{$ p_Y(y) = \sum_{x} p_{XY}(x,y) $}
+\]
+
+\subsection{Formula Set}
+
+\[
+\fbox{$ p_X(x_i) = \sum_{j} p_{ij} $}
+\quad
+\fbox{$ p_Y(y_j) = \sum_{i} p_{ij} $}
+\]
+
+\[
+\fbox{$ \sum_i p_X(x_i) = 1 $}
+\quad
+\fbox{$ \sum_j p_Y(y_j) = 1 $}
+\]
+
+\subsection{Worked Example}
+
+\[
+\begin{array}{c|cc}
+ & y=0 & y=1 \\
+\hline
+x=0 & \frac{1}{8} & \frac{1}{4} \\
+x=1 & \frac{3}{8} & \frac{1}{4}
+\end{array}
+\]
+
+\[
+\fbox{$ p_X(0) = \frac{1}{8} + \frac{1}{4} = \frac{3}{8} $}
+\]
+
+\[
+\fbox{$ p_X(1) = \frac{3}{8} + \frac{1}{4} = \frac{5}{8} $}
+\]
+
+\[
+\fbox{$ p_Y(0) = \frac{1}{8} + \frac{3}{8} = \frac{1}{2} $}
+\]
+
+\[
+\fbox{$ p_Y(1) = \frac{1}{4} + \frac{1}{4} = \frac{1}{2} $}
+\]
+
+\section{Correlation}
+
+\[
+\fbox{$ R_{XY} = E[XY] $}
+\]
+
+\section{Covariance}
+
+\subsection{Definition}
+
+\[
+\fbox{$ \text{Cov}(X,Y) = E[(X - \mu_X)(Y - \mu_Y)] $}
+\]
+
+\[
+\fbox{$ \mu_X = E[X], \quad \mu_Y = E[Y] $}
+\]
+
+\subsection{Derivation}
+
+\[
+\fbox{$ \text{Cov}(X,Y) = E[XY] - E[X]E[Y] $}
+\]
+
+\subsection{Properties}
+
+\[
+\fbox{$ \text{Cov}(X,Y) = \text{Cov}(Y,X) $}
+\]
+
+\[
+\fbox{$ \text{Cov}(X,X) = \text{Var}(X) $}
+\]
+
+\[
+\fbox{$ \text{Cov}(aX+b, cY+d) = ac\,\text{Cov}(X,Y) $}
+\]
+
+\[
+\fbox{$ X \perp Y \Rightarrow \text{Cov}(X,Y)=0 $}
+\]
+
+\section{Worked Example}
+
+\[
+\fbox{$ Y = -2X + 3 $}
+\]
+
+\[
+\fbox{$ \text{Cov}(X,Y) = -2\,\text{Var}(X) $}
+\]
+
+\section{Continuous Example}
+
+\[
+\fbox{$ f_{XY}(x,y) = \frac{xy}{96}, \quad 0<x<4, \; 1<y<5 $}
+\]
+
+\[
+\fbox{$ E[X] = \frac{8}{3} $}
+\quad
+\fbox{$ E[Y] = \frac{31}{9} $}
+\]
+
+\[
+\fbox{$ E[XY] = \frac{248}{27} $}
+\]
+
+\[
+\fbox{$ E[2X+3Y] = \frac{47}{3} $}
+\]
+
+\[
+\fbox{$ \text{Var}(X) = \frac{8}{9} $}
+\quad
+\fbox{$ \text{Var}(Y) = \frac{92}{81} $}
+\]
+
+\[
+\fbox{$ \text{Cov}(X,Y) = 0 $}
+\quad
+\fbox{$ \rho_{XY} = 0 $}
+\]
+
+\section{Pearson Correlation Coefficient}
+
+\[
+\fbox{$ \rho_{XY} = \frac{\text{Cov}(X,Y)}{\sigma_X \sigma_Y} $}
+\]
+
+\[
+\fbox{$ \rho_{XY} = \frac{\text{Cov}(X,Y)}{\sqrt{\text{Var}(X)\text{Var}(Y)}} $}
+\]
+
+\[
+\fbox{$ -1 \le \rho_{XY} \le 1 $}
+\]
+
+\section{Joint Gaussian Random Variables}
+
+\subsection{Algebraic Form}
+
+\[
+\fbox{$
+f_{XY}(x,y) =
+\frac{1}{2\pi\sigma_X\sigma_Y\sqrt{1-\rho^2}}
+\exp\left(
+\frac{-1}{2(1-\rho^2)}
+\left[
+\left(\frac{x-\mu_X}{\sigma_X}\right)^2 +
+\left(\frac{y-\mu_Y}{\sigma_Y}\right)^2 -
+2\rho\left(\frac{x-\mu_X}{\sigma_X}\right)\left(\frac{y-\mu_Y}{\sigma_Y}\right)
+\right]
+\right)
+$}
+\]
+
+\section{Final Revision}
+
+\subsection{Formula Compendium}
+
+\[
+\fbox{$ p_X(x) = \sum_y p_{XY}(x,y) $}
+\quad
+\fbox{$ p_Y(y) = \sum_x p_{XY}(x,y) $}
+\]
+
+\[
+\fbox{$ R_{XY} = E[XY] $}
+\]
+
+\[
+\fbox{$ \text{Cov}(X,Y) = E[XY] - E[X]E[Y] $}
+\]
+
+\[
+\fbox{$ \text{Var}(X) = E[X^2] - (E[X])^2 $}
+\]
+
+\[
+\fbox{$ \rho_{XY} = \frac{\text{Cov}(X,Y)}{\sqrt{\text{Var}(X)\text{Var}(Y)}} $}
+\]
+
+\end{document}
