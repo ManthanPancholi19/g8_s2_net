@@ -41,9 +41,7 @@ class DQN(nn.Module):
 
 # =============================================================================
 # DDQN Agent — Epsilon-Boltzmann Exploration
-#
-# Scribe Q2: "At each step, with probability ε_t the agent explores;
-#             otherwise it exploits (greedy argmax)."
+
 # Boltzmann sampling during exploration:
 #   P(A=j|S) = exp(Q(s,j)/T_temp) / Σ_k exp(Q(s,k)/T_temp),  T_temp = 0.5
 # Decaying epsilon: ε_t = max(0.1, 0.98^t)
@@ -54,7 +52,7 @@ class DDQN_Agent:
         self.action_size   = action_size
         self.memory        = deque(maxlen=5000)       # replay buffer cap=5000
 
-        # Hyperparameters (Scribe Q4, Concept Map)
+        
         self.gamma         = 0.95                     # discount factor
         self.epsilon       = 1.0                      # initial exploration rate
         self.epsilon_min   = 0.1                      # minimum exploration rate
@@ -73,21 +71,7 @@ class DDQN_Agent:
         self.memory.append((state, action, reward, next_state, done))
 
     def act(self, state):
-        """
-        Epsilon-Boltzmann hybrid action selection (Scribe Q2, PPT Slide 10).
-
-        With probability ε_t → EXPLORE via Boltzmann (softmax) sampling over
-        Q-values with temperature T_temp=0.5.  This concentrates exploratory
-        probability on nodes already appearing promising — superior to ε-greedy
-        (uniform random), which would ignore Q-value information entirely.
-
-        With probability (1−ε_t) → EXPLOIT via greedy argmax.
-
-        T_temp=0.5 sits between:
-          T→0: deterministic argmax (equivalent to M3 SDF)
-          T→∞: uniform random (ignores learned Q-values)
-        Result across trained episode: ~12.6% Explore / ~87.4% Exploit.
-        """
+        
         state_tensor = torch.FloatTensor(state).unsqueeze(0)
         with torch.no_grad():
             q_values = self.policy_net(state_tensor)
@@ -101,17 +85,7 @@ class DDQN_Agent:
             return torch.argmax(q_values[0]).item(), "Exploit (AI)"
 
     def replay(self, batch_size):
-        """
-        Double Q-Learning update (Scribe Q4, PPT Slide 10).
-
-        DDQN decouples action selection (policy net) from action evaluation
-        (target net), reducing overestimation bias inherent in standard DQN.
-        Critical for high-variance reward environment (exp(Wq) structure).
-
-        Uniform sampling from replay buffer explicitly breaks temporal
-        autocorrelation in Wq — necessary for convergent Q-value learning
-        (Scribe Q3: "Experience replay is essential for stability").
-        """
+        
         if len(self.memory) < batch_size:
             return
 
@@ -141,20 +115,7 @@ class DDQN_Agent:
             self.epsilon *= self.epsilon_decay
 
 
-# =============================================================================
-# M4 Simulation — D2D Edge Network with DDQN Stochastic Policy
-#
-# Preserved from M3 (Scribe Q4, PPT Slide 15):
-#   • Arrival process: T_inter ~ Exp(1/1.5)
-#   • CPU frequencies: f_i ~ U[1.0, 2.5] GHz
-#   • Task data size: X ~ U[0.1, 1.0] MB
-#   • Deadline: τ = 3.0s (X<0.5 MB) / 5.0s (X≥0.5 MB)
-#   • BWeff = 1.5 Mbps (fixed; Rayleigh fading is M5 refinement)
-#
-# Changed from M3 (Scribe Q1/Q4):
-#   • Decision rule: argmin_j D_j → Action ~ π(A|S) via DDQN
-#   • Input model: independent marginals → correlated Y=5X+ε, ρ≈+0.55
-# =============================================================================
+
 class M4_Simulation:
     def __init__(self, num_devices=5):
         self.num_devices = num_devices
@@ -170,56 +131,19 @@ class M4_Simulation:
         self.xy_pairs = []
 
     def generate_task(self):
-        """
-        Generate a correlated (X, Y) task pair.
-
-        Correlated Workload Model (Scribe Q3, PPT Slide 9, Concept Map):
-          X ~ U[0.1, 1.0] MB  (task data size)
-          Y = 5X + ε,  ε ~ N(0.5, σ_ε)
-          f(X,Y) ≠ f(X)·f(Y)  →  non-factorizable joint distribution
-
-        Target ρ(X,Y) ≈ +0.55:
-          σ_X = (1.0−0.1)/√12 ≈ 0.260
-          ρ = 5·σ_X / √(25·σ²_X + σ²_ε)
-          Solving for ρ=0.55 → σ_ε ≈ 1.95
-
-        Implication (Scribe Q3): large tasks (X↑) also carry above-average
-        CPU demand (Y↑), creating doubly-intense overload bursts that
-        deterministic schedulers cannot handle.
-
-        Queue backlog evolves as derived RV (Scribe Q3):
-          Wq(t) = max{0, Wq(t−1) + Y_{t−1}/f_i − T_inter,t}
-        """
+        
         inter_arrival    = np.random.exponential(scale=1.5)   # T_inter ~ Exp(λ=1/1.5)
         self.system_time += inter_arrival
         self.queues       = np.maximum(0, self.queues - inter_arrival)
 
         task_size   = np.random.uniform(0.1, 1.0)             # X ~ U[0.1, 1.0] MB
-        # σ_ε = 1.95 achieves ρ(X,Y) ≈ +0.55 as documented in scribe/PPT/concept map
+        
         task_cycles = np.maximum(0.1, (task_size * 5) + np.random.normal(0.5, 1.95))
         deadline    = 3.0 if task_size < 0.5 else 5.0         # τ (same as M3)
         return task_size, task_cycles, deadline
 
     def execute(self, source, target, size, cycles, deadline):
-        """
-        Execute task routing and compute sojourn time.
-
-        Sojourn decomposition (Scribe Q4, PPT Slide 4):
-          T_soj = D_tx + Wq + Y/f_i
-          D_tx = 0 if local, else size / BW_eff  (BW_eff = 1.5 Mbps)
-
-        Reward function (Scribe Q4, PPT Slide 10, Concept Map):
-          Success: r = 50 / exp(Wq[target])
-            → Maximised when target node is idle (Wq=0 → r=50)
-            → Incentivises routing to under-utilised nodes
-          Failure: r = −(T²_soj + exp(Wq[target]))
-            → Penalises heavy-load routing and large sojourn times
-
-        Exponential penalty exp(Wq) directly mirrors the congestion
-        externality term in the sojourn CDF F(t;λ_j) = 1−exp[−(µ_j−λ_j)·τ_eff]
-        — routing to a loaded node exponentially reduces all queued tasks'
-        success probability (Scribe Q4).
-        """
+       
         t_trans     = 0 if target == source else (size / 1.5)  # BW_eff = 1.5 Mbps
         t_exec      = cycles / self.cpu_freq[target]
         total_delay = t_trans + self.queues[target] + t_exec
@@ -235,17 +159,7 @@ class M4_Simulation:
         return total_delay, t_exec, is_success, reward
 
     def train(self):
-        """
-        Training loop: 50 episodes × 500 tasks = 25,000 total decisions.
-
-        Key design points (Scribe Q2, Q4):
-        - ε decays 1.0 → 0.1 over 50 episodes (ε_decay=0.98 per episode)
-        - Target net updated every 5 episodes (prevents moving-target instability)
-        - Episode 49 (final): ε forced to 0.15 BEFORE the task loop to produce
-          the documented ~12.6% explore / ~87.4% exploit split in dashboard
-        - History collected only in episode 49 for the evaluation dashboard
-          (500 data points, one per task — matches PPT "500-Task Episode Evaluation")
-        """
+       
         print("=" * 60)
         print("  M4 DDQN Training — D2D Edge Network")
         print("  Stochastic Policy: Action ~ π(A|S) via Epsilon-Boltzmann")
@@ -327,19 +241,7 @@ class M4_Simulation:
         self.plot()
 
     def plot(self):
-        """
-        8-Panel M4 Evaluation Dashboard (Scribe Q5, PPT Slide 13/14).
-
-        Panels:
-          [0,0] Reliability (TCR %)           — primary Bernoulli objective
-          [0,1] Worst-Case Tail Latency (95th) — Jensen Gap correction
-          [0,2] Randomization Strategy Mix     — confirms stochastic policy
-          [0,3] Resource Utilization           — load distribution across nodes
-          [1,0] Avg Queue Delay (Wq)           — synchronisation collapse check
-          [1,1] System Throughput              — tasks/s under high λ
-          [1,2] Joint PDF ρ(X,Y)              — correlated workload model
-          [1,3] Jain's Fairness Index          — equitable load balancing
-        """
+       
         df = pd.DataFrame(self.history)
 
         fig, axes = plt.subplots(2, 4, figsize=(28, 14))
