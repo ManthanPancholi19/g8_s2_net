@@ -62,7 +62,7 @@ We modeled each edge device as an **M/M/1 queueing system** (Markovian arrivals,
     $$F(t \leq \tau) = 1 - e^{-(\mu - \lambda)\tau_{eff}}$$
     *Where $\tau_{eff} = \tau - t_{trans}$ (Effective time remaining after transmission).*
 
-### 2.3 The "Variance Lesson": Jensen’s Inequality
+### 2.3 The "Variance Lesson": Jensen's Inequality
 A key theoretical contribution of our Milestone 2 report was the proof that **Averages Lie**. We utilized **Jensen's Inequality** to demonstrate that in a convex cost system (where delay cost is non-linear), designing for the average execution time leads to systemic failure:
 $$\mathbb{E}[C(T)] \geq C(\mathbb{E}[T])$$
 This proved that the **variance** of processing time is a greater risk factor than the **mean**.
@@ -76,7 +76,7 @@ Because individual offloading decisions affect neighbor workloads, we identified
 In this milestone, we operationalized our theoretical framework into a high-fidelity **Python-based Discrete-Event Simulator**. We built a "Scientific Laboratory" to test if a simple, deterministic rule could survive the unpredictable bursts of a real-world D2D mesh.
 
 ### 3.1 The Simulation Pipeline
-To ensure statistical convergence and "Pro-Level" accuracy, we utilized the **Monte Carlo Method**:
+To ensure statistical convergence and  accuracy, we utilized the **Monte Carlo Method**:
 *   **Scale:** Simulated **600,000 individual tasks** (Sweep of 20 Arrival Rates $\times$ 10 independent trials $\times$ 3,000 tasks per run).
 *   **Architecture:** The code tracks the `device_free_time` for each heterogeneous node, accurately calculating wait times ($W_q$) and sojourn times ($T_{sojourn}$).
 
@@ -92,7 +92,7 @@ We moved beyond simple averages by implementing a **Bimodal Workload Profile** t
 *   **BeautyCam (M/M/1):** Modeled via **Exponential Distribution** ($\mu=1.0$) for standard Markovian service.
 *   **Physical Layer:** Distance is modeled as $d \sim U(5, 50)$, which dynamically degrades effective bandwidth and increases transmission uncertainty.
 
-### 3.4 Key Empirical Findings (The "Pro" Dashboard)
+### 3.4 Key Empirical Findings 
 Our Stage 2 Analysis revealed critical system behaviors:
 *   **The "Herd Effect":** Our purple Dashboard curve shows queue delays skyrocketing to **50+ seconds**. This proves that deterministic rules cause nodes to "synchronize" and overwhelm the same neighbor simultaneously, leading to system-wide saturation.
 *   **Empirical Proof of the Jensen Gap:** By tracking the square of the delay ($T^2$), our red Dashboard curve proves that as variance increases, the "cost of being late" grows non-linearly. This confirms our M2 mathematical hypothesis.
@@ -102,40 +102,77 @@ Our Stage 2 Analysis revealed critical system behaviors:
 Milestone 3 proves that **Deterministic Logic is insufficient** for high-load D2D environments. This "Spectacular Failure" provides the scientific justification for **Milestone 4**, where we will discard myopic rules and introduce **Randomized AI Algorithms (DRL)** to break node synchronization.
 
 ---
----
 
 ## Milestone 4: Randomized Algorithm Strategy & Multi-Metric Performance Evaluation
 
-Milestone 4 addresses the "Herd Effect" failure identified in Milestone 3 by replacing deterministic logic with a stochastic, learning-based approach. We introduce a Double Deep Q-Network (DDQN) that utilizes principled randomness to decorrelate offloading decisions and restore system stability.
+Milestone 4 addresses the "Herd Effect" failure identified in Milestone 3 by introducing **principled randomness** into the offloading decision. The deterministic SDF rule is replaced with a Double Deep Q-Network (DDQN) that samples actions from a learned probability distribution, breaking node synchronization and restoring system stability.
 
-### 4.1 The Transition to Stochastic Policy
-The core architectural shift in Milestone 4 is the move from a fixed point-estimation rule to a distributional decision-making process.
-*   **M3 Deterministic:** $Action = \arg\min_j D_j$ (Fixed function of state)
-*   **M4 Randomized:** $Action \sim \pi(A | S)$ (Random variable drawn from a learned distribution)
+### 4.1 Why Randomization?
 
-This shift allows the system to spread load across the network even when agents share identical state observations, effectively breaking the negative probabilistic dependency that previously caused queue collapse.
+The Herd Effect is a **coordination failure, not an estimation problem**. Every deterministic agent applying the same greedy rule converges on the same target simultaneously, creating a negative probabilistic dependency:
 
-### 4.2 Algorithm Design: DDQN with Epsilon-Boltzmann Exploration
-The system implements a Double Deep Q-Network (DDQN) to learn an optimal routing policy through interaction.
-*   **Exploration Strategy:** We utilize an Epsilon-Boltzmann hybrid. At each step, with probability $\epsilon_t$, the agent explores using Boltzmann (Softmax) sampling; otherwise, it exploits the learned greedy action.
-*   **Boltzmann Sampling:** 
-    $$P(A = j | S = s) = \frac{\exp(Q_\theta(s, j) / T_{temp})}{\sum_{k=1}^{N} \exp(Q_\theta(s, k) / T_{temp})}$$
-    With $T_{temp} = 0.5$, high-value nodes receive elevated probability mass while under-loaded alternative nodes remain reachable, preventing synchronization without sacrificing quality.
-*   **Neural Architecture:** The agent maps an 8-dimensional state vector ($S_t \in \mathbb{R}^8$) through three fully connected layers (128-128 units) with ReLU activations to produce Q-values for the 5 candidate target nodes.
+$$P(\text{Succ}_A \cap \text{Succ}_B) < P(\text{Succ}_A) \cdot P(\text{Succ}_B)$$
 
-### 4.3 Probabilistic Modeling: Correlated Input Structure
-Milestone 4 explicitly models the non-factorizable joint distribution of task features:
-*   **Input Correlation:** We model the dependency between task data size ($X$) and CPU demand ($Y$) as:
-    $$Y = 5X + \epsilon, \quad \epsilon \sim \mathcal{N}(0.5, 0.01)$$
-*   **Implication:** This produces a positive correlation ($\rho \approx +0.57$). The DDQN state vector encodes both $X$ and $Y$, allowing the policy to account for the fact that payload size and computational burden are stochastically coupled.
+Introducing stochasticity breaks this synchronization. Even agents sharing identical state observations draw different samples from the Boltzmann distribution, automatically distributing burst load across the network.
 
-### 4.4 The Reward Function & Jensen's Inequality
-The reward signal is designed to penalize high-variance outcomes, providing a corrective mechanism for the Jensen Gap:
+### 4.2 The Transition to Stochastic Policy
+
+*   **M3 Deterministic:** $Action = \arg\min_j D_j$ — fixed function of state
+*   **M4 Randomized:** $Action \sim \pi(A \mid S)$ — random variable drawn from a learned distribution
+
+### 4.3 Algorithm Design: DDQN with Epsilon-Boltzmann Exploration
+
+*   **Exploration Strategy:** An Epsilon-Boltzmann hybrid. With probability $\epsilon_t$ the agent explores via Boltzmann sampling; otherwise it exploits the learned greedy action.
+*   **Boltzmann Sampling:**
+    $$P(A = j \mid S = s) = \frac{\exp(Q_\theta(s, j) / T_{temp})}{\sum_{k=1}^{N} \exp(Q_\theta(s, k) / T_{temp})}, \quad T_{temp} = 0.5$$
+*   **Epsilon Decay:** $\epsilon_t = \max(0.1,\ 0.98^t)$, decaying from 1.0 to 0.1 over 50 episodes
+*   **Neural Architecture:** $\mathbb{R}^8 \rightarrow 128 \rightarrow 128 \rightarrow \mathbb{R}^5$ (ReLU layers, one Q-value per target node)
+*   **State Vector:** $S_t = [W_{q,1}, \ldots, W_{q,5},\ \text{src},\ X,\ Y,\ \tau] \in \mathbb{R}^8$
+*   **Double Q-Learning Update:**
+    $$L(\theta) = \mathbb{E}\left[\left(r + \gamma \cdot Q_{\theta^-}\!\left(s', \arg\max_{a'} Q_\theta(s', a')\right) - Q_\theta(s, a)\right)^2\right]$$
+*   **Hyperparameters:** $\gamma = 0.95$, lr $= 0.001$ (Adam), batch $= 64$, replay buffer $= 5{,}000$ transitions
+
+### 4.4 Probabilistic Modeling: Correlated Input Structure
+
+Milestone 4 explicitly models the **non-factorizable joint distribution** of task features:
+
+$$Y = 5X + \epsilon, \quad \epsilon \sim \mathcal{N}(0.5, 1.95), \quad \rho(X, Y) \approx +0.55$$
+$$f(X, Y) \neq f(X) \cdot f(Y)$$
+
+Large tasks (high $X$) simultaneously carry above-average CPU demand (high $Y$), producing doubly intense bursts. The DDQN state encodes both $X$ and $Y$, allowing the learned policy to account for this coupled structure.
+
+### 4.5 The Reward Function & Jensen's Inequality
+
 $$r(s, a) = \begin{cases} 50 / \exp(W_q) & \text{if } T_{soj} \leq \tau \\ -(T_{soj}^2 + \exp(W_q)) & \text{if } T_{soj} > \tau \end{cases}$$
-The exponential term $\exp(W_q)$ directly mirrors the congestion externality. By penalizing routing to heavily loaded nodes, the agent learns to seek under-utilized resources even if they are not the globally shortest-delay option.
 
-### 4.5 Comparative Results: SDF vs. DDQN
-The introduction of randomized AI resulted in a multi-dimensional improvement in system health:
+The exponential penalty $\exp(W_q)$ mirrors the congestion externality. The agent learns to seek under-utilized nodes even when they are not the globally shortest-delay option — directly addressing the failure mode Jensen's Inequality predicted.
+
+### 4.6 Evaluation Metrics
+
+To evaluate whether the randomized strategy performs better than the deterministic baseline, the following metrics were defined:
+
+| Metric | Definition | Why Appropriate |
+| :--- | :--- | :--- |
+| **Task Completion Rate (TCR)** | $\Phi = \mathbb{E}[\sum_i Y_i]$ | Primary objective — directly measures deadline compliance |
+| **Tail Latency (95th pct.)** | $t : P(T_{soj} > t) = 0.05$ | Averages mislead; tail behavior reveals true policy quality per Jensen's Inequality |
+| **Jain's Fairness Index** | $J = (\sum_j c_j)^2 / (N \sum_j c_j^2)$ | Detects load imbalance caused by the Herd Effect; $J=1$ is perfectly equitable |
+| **System Throughput** | $\Theta = \sum_i Y_i / T_{system}$ | Confirms sustained performance under high arrival rate $\lambda$ |
+| **Queue Stability ($W_q$)** | Mean backlog across all nodes | Directly measures whether synchronization collapse is broken |
+| **Strategy Mix** | Fraction of explore vs. exploit decisions | Confirms the stochastic policy is operational — neither fully random nor fully greedy |
+
+### 4.7 How to Run
+
+```bash
+cd code/src/milestone4
+python m4_simulation.py
+```
+
+Automatically saves:
+- `code/experiments/M4_Final_Dashboard.png` — 8-panel evaluation dashboard
+- `code/data/m4_episode_results.csv` — per-task metrics from the final episode
+- `code/data/m4_xy_pairs.csv` — correlated (X, Y) task pairs, $\rho \approx +0.55$
+
+### 4.8 Comparative Results: SDF vs. DDQN
 
 | Metric | M3 Deterministic (SDF) | M4 Randomized (DDQN) |
 | :--- | :--- | :--- |
@@ -146,10 +183,12 @@ The introduction of randomized AI resulted in a multi-dimensional improvement in
 | **Queue Stability ($W_q$)** | Divergent ($W_q > 50s$) | Convergent ($W_q < 1.5s$) |
 | **Strategy Mix** | 100% Exploit | 12.6% Explore / 87.4% Exploit |
 
-### 4.6 Key Insights from Randomized Strategy
+> **Note:** The sole architectural change between M3 and M4 is SDF replaced by DDQN Epsilon-Boltzmann. All other simulation parameters are identical. All improvements are causally attributable to the randomized policy alone.
+
+### 4.9 Key Insights from Randomized Strategy
 1.  **Randomness as Coordination:** Purposeful load diversification, achieved through an exploration fraction of ~12.6%, is sufficient to break the synchronization that caused M3 to collapse.
 2.  **Experience Replay is Essential:** Uniform sampling from the 5,000-transition replay buffer breaks the temporal autocorrelation in queue backlogs, enabling stable convergent learning.
-3.  **Hedging Against Tail Events:** By dropping 95th-percentile latency from 50s to < 6s, the DDQN validates the theoretical need to optimize for variance rather than just means (Jensen’s Inequality).
+3.  **Hedging Against Tail Events:** By dropping 95th-percentile latency from 50s to < 6s, the DDQN validates the theoretical need to optimize for variance rather than just means (Jensen's Inequality).
 
 ---
 
