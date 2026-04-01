@@ -1,0 +1,110 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\title{Lecture 22 Scribe - Chebyshev's Inequality, Chernoff Bounds, and Jensen's Inequality}
+
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This lecture explores advanced probabilistic bounds—specifically Chebyshev's Inequality, Chernoff Bounds, and Jensen's Inequality—to control deviations from the mean and optimize system design. These tools allow engineers to move beyond simple averages to understand "tail behavior" in complex systems.
+\end{abstract}
+
+\section{Key Definitions}
+\begin{description}
+    \item[Markov Inequality:] A basic bound for non-negative random variables that uses only the expected value to bound the probability of exceeding a value $a$: $P(X \ge a) \le \frac{E[X]}{a}$.
+    \item[Chebyshev's Inequality:] A bound that uses both mean and variance to control the probability of a random variable deviating from its mean.
+    \item[Chernoff Bound:] A very tight bound that uses the entire Moment Generating Function ($e^{tX}$) to provide exponential decay for tail probabilities.
+    \item[Jensen's Inequality:] A theorem relating the expectation of a function to the function of an expectation for convex functions: $g(E[X]) \le E[g(X)]$.
+    \item[Convex Function:] A function $g(x)$ where the curve always stays below the line segment connecting any two points on the function. Mathematically, $g''(x) \ge 0$.
+    \item[Tail Regions:] Parts of a distribution representing large deviations far from the mean.
+\end{description}
+
+\section{Detailed Content \& Logic}
+
+\subsection{Chebyshev's Inequality: Logic and Derivation}
+Chebyshev's Inequality improves upon Markov's by utilizing variance to bound "spread" around the mean.
+
+\textbf{Mathematical Form:}
+\[ P(|X - \mu| \ge a) \le \frac{Var(X)}{a^{2}} \]
+
+\textbf{Step-by-Step Derivation (Chain-of-Thought):}
+\begin{enumerate}
+    \item \textbf{Identify the Event:} We want to bound the probability that the absolute distance from the mean $|X - \mu|$ is at least $a$.
+    \item \textbf{Square the Deviation:} To use variance, we square both sides of the inequality within the probability: $P(|X - \mu| \ge a) = P((X - \mu)^{2} \ge a^{2})$. This works because both sides are non-negative.
+    \item \textbf{Apply Markov:} Treat $(X - \mu)^{2}$ as a new non-negative random variable and $a^{2}$ as the threshold. By Markov's Inequality, $P((X - \mu)^{2} \ge a^{2}) \le \frac{E[(X - \mu)^{2}]}{a^{2}}$.
+    \item \textbf{Simplify:} Since $E[(X - \mu)^{2}]$ is the definition of variance ($Var(X)$), we arrive at the final bound: $\frac{Var(X)}{a^{2}}$.
+\end{enumerate}
+
+\subsection{Chernoff Bound: The Exponential Transformation}
+The Chernoff bound is stronger because it uses an exponential transformation ($e^{tX}$) to amplify large values of $X$, creating a tighter tail bound.
+
+\textbf{Logic for the Upper Tail ($P(X \ge a)$):}
+\begin{enumerate}
+    \item \textbf{Transform:} For any $t > 0$, the event $X \ge a$ is equivalent to $e^{tX} \ge e^{ta}$.
+    \item \textbf{Apply Markov:} Since $e^{tX}$ is always non-negative, Markov's Inequality applies: $P(e^{tX} \ge e^{ta}) \le \frac{E[e^{tX}]}{e^{ta}}$.
+    \item \textbf{Optimize:} This bound holds for all $t > 0$. To get the tightest bound, we minimize the right-hand side over $t$: $P(X \ge a) \le \min_{t>0} \left\{ \frac{E[e^{tX}]}{e^{ta}} \right\}$.
+\end{enumerate}
+
+\subsection{Jensen's Inequality: Convexity and Expectation}
+Jensen's Inequality answers whether averaging first or applying a function first results in a larger value.
+
+\textbf{Theorem:} If $g(x)$ is convex on interval $S$, then $g(E[X]) \le E[g(X)]$.
+
+\textbf{Step-by-Step Reasoning:}
+\begin{enumerate}
+    \item \textbf{Convexity:} For a convex function, a line segment between any two points lies \textit{above} the curve.
+    \item \textbf{Weighted Average:} In probability, expectation is a weighted average.
+    \item \textbf{Result:} Applying the function to the average ($g(E[X])$) yields a smaller value than averaging the results of the function ($E[g(X)]$).
+\end{enumerate}
+
+\section{Worked Examples}
+
+\subsection{Example 1: Network Latency SLA (Chebyshev)}
+\textbf{Problem:} A network route has average latency $E[X] = 50$ ms and variance $Var(X) = 16$ ms$^2$. Bound the probability that latency falls outside $[30$ ms, $70$ ms$]$.
+
+\textbf{Solution:}
+\begin{enumerate}
+    \item \textbf{Parameters:} $\mu = 50, \sigma^{2} = 16$.
+    \item \textbf{Identify $a$:} Falling outside $[30, 70]$ means $|X - 50| \ge 20$. So $a = 20$.
+    \item \textbf{Apply Chebyshev:} $P(|X - 50| \ge 20) \le \frac{16}{20^{2}} = \frac{16}{400}$.
+    \item \textbf{Simplify:} $\frac{16}{400} = \frac{1}{25} = 0.04$. At most \textbf{4\%} of packets fail the SLA.
+\end{enumerate}
+
+\subsection{Example 2: Job Interviews (Chernoff)}
+\textbf{Problem:} A candidate has probability $p = 0.5$ of being hired at each of $n = 20$ companies. Bound the probability of zero offers using the lower tail bound $P(X \le (1 - \delta)\mu) \le e^{-\mu\delta^{2}/2}$.
+
+\textbf{Solution:}
+\begin{enumerate}
+    \item \textbf{Expectation:} $\mu = np = 20(0.5) = 10$.
+    \item \textbf{Find $\delta$:} We want $P(X \le 0)$. Set $(1 - \delta)\mu = 0$. Since $\mu = 10$, $(1 - \delta) = 0 \Rightarrow \delta = 1$.
+    \item \textbf{Apply Bound:} $P(X \le 0) \le e^{-(10)(1)^{2}/2} = e^{-5}$.
+    \item \textbf{Result:} $e^{-5} \approx 0.0067$ (\textbf{0.67\%}).
+\end{enumerate}
+
+\section{Summary for Exam Prep}
+
+\subsection{Comparison of Inequalities in System Design}
+Designing for "average" load is dangerous; engineers must design for the "tail."
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Inequality} & \textbf{Information Needed} & \textbf{Capacity ($P \le 0.01$)} & \textbf{Use Case} \\ \midrule
+Markov & Only Average Load & 1,000,000 & Safety fallback \\
+Chebyshev & Avg + Burstiness (Var) & 30,000 & General provisioning \\
+Chernoff & Full Dist. (MGF) & 14,500 & High-precision sizing \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{The Golden Rule:} More statistical information $\rightarrow$ Tighter bounds $\rightarrow$ Lower hardware costs.
+
+\end{document}

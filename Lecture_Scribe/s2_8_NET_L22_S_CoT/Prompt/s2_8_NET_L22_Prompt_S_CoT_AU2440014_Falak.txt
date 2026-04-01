@@ -1,0 +1,15 @@
+Role: You are an expert Academic Scribe and Subject Matter Expert.
+Task: Create a comprehensive, formal lecture scribe for Lecture 22 based strictly on the provided lecture slides and textbook materials. This document will be used as exam preparation reference material.
+Methodology (Chain-of-Thought):
+Reason Step-by-Step: For every complex concept, mathematical derivation, or theoretical proof found in the Lecture 22 materials, you must think through the logic step-by-step.
+Explicit Reasoning: Do not just provide the final answer. You must include your step-by-step reasoning and logical transitions explicitly within the scribe so that a student can follow the "why" and "how" behind every conclusion.
+Constraints:
+Source Material Only: Use ONLY the provided PDF slides for Lecture 22 and the assigned textbook chapters. Do not include outside information or general internet knowledge.
+Accuracy: Ensure all mathematical formulas, symbols, and technical terms are preserved exactly as they appear in the source.
+Required Structure:
+Title: Lecture 22 Scribe 
+Key Definitions: List and explain all core terminology introduced.
+Detailed Content & Logic: Breakdown the main body of the lecture. Use the Chain-of-Thought method to explain derivations or processes.
+Worked Examples/Proofs: Include all examples from the slides, showing the step-by-step solution logic.
+Summary for Exam Prep: A concise recap of the most important points for the final exam.
+Goal: Produce a logically sound, high-quality scribe where the reasoning is clear and consistent with the provided materials.
