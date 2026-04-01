@@ -1,0 +1,285 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{enumitem}
+
+\begin{document}
+
+\title{\textbf{CSE400 - Lecture 22} \\ \Large Inequalities and Tail Bounds}
+\author{}
+\date{}
+
+\maketitle
+
+\section*{1. Tail of a Random Variable}
+
+\textbf{Definition}
+
+The tail of a random variable is:
+\[
+P(X > x)
+\]
+
+\textbf{Why do we care about tails?}
+\begin{itemize}
+\item Jobs delayed more than 24 hours
+\item Packets dropped due to full buffer
+\end{itemize}
+
+\textbf{Key Idea}
+\begin{itemize}
+\item Mean $\rightarrow$ average behavior (easy)
+\item Tail $\rightarrow$ rare extreme events (hard)
+\end{itemize}
+
+\textbf{Why are tails hard to compute?}
+\begin{itemize}
+\item Requires summing many small probabilities
+\end{itemize}
+
+\section*{2. Tail Examples}
+
+\textbf{Example 1: Jobs Across Servers}
+
+\textbf{Problem}
+
+Suppose jobs are distributed among servers at random.
+
+Find:
+\[
+P(\text{a particular server gets } \geq k \text{ jobs})
+\]
+
+\textbf{Model}
+
+\[
+X \sim \text{Binomial}(n,p)
+\]
+\[
+P(X \geq k) = \sum_{i=k}^{n} \binom{n}{i} p^i (1-p)^{n-i}
+\]
+
+\textbf{Observation}
+\begin{itemize}
+\item Jobs are assigned randomly
+\item Most servers get few jobs
+\item Occasionally, one server gets many jobs
+\item This is a tail event (rare overload)
+\end{itemize}
+
+\textbf{Example 2: Poisson Arrivals}
+
+\textbf{Problem}
+
+Jobs arrive according to a Poisson process with rate $\lambda$ jobs/hour.
+
+Find:
+\[
+P(X \geq k)
+\]
+
+\textbf{Model}
+
+\[
+X \sim \text{Poisson}(\lambda)
+\]
+\[
+P(X \geq k) = \sum_{i=k}^{\infty} e^{-\lambda} \frac{\lambda^i}{i!}
+\]
+
+\textbf{Observation}
+\begin{itemize}
+\item Jobs arrive randomly over time
+\item Most hours have moderate arrivals
+\item Sometimes there is a burst of arrivals
+\item This is a tail event (sudden spike in load)
+\end{itemize}
+
+\section*{3. Why Tail Bounds?}
+
+\textbf{Exact Computation}
+\begin{itemize}
+\item Complicated, long sums
+\end{itemize}
+
+\textbf{Idea}
+\begin{itemize}
+\item Instead of exact value: Find an upper bound
+\item Easier to compute
+\item Still gives a guarantee
+\end{itemize}
+
+\textbf{Key Idea}
+\begin{itemize}
+\item Approximate safely instead of computing exactly
+\end{itemize}
+
+\section*{4. Running Example (Key Idea)}
+
+Flip a fair coin $n$ times.
+
+\textbf{Distribution}
+\[
+X = \text{number of heads}, \quad X \sim \text{Binomial}(n, \tfrac{1}{2})
+\]
+
+\textbf{Mean}
+\[
+E[X] = \frac{n}{2}
+\]
+
+\textbf{Question}
+\[
+P\left(X \geq \frac{3n}{4}\right)
+\]
+
+\section*{5. Markov’s Inequality}
+
+\textbf{Key Idea}
+\begin{itemize}
+\item Uses only the mean
+\item Large values are rare
+\end{itemize}
+
+\textbf{Statement}
+
+For non-negative $X$:
+\[
+P(X \geq a) \leq \frac{E[X]}{a}
+\]
+
+\textbf{Proof (as presented)}
+
+\[
+E[X] = \sum_{x=0}^{\infty} x p_X(x)
+\]
+
+\[
+\geq \sum_{x=a}^{\infty} x p_X(x)
+\]
+
+\[
+\geq \sum_{x=a}^{\infty} a p_X(x)
+\]
+
+\[
+= a \cdot P(X \geq a)
+\]
+
+\[
+\Rightarrow P(X \geq a) \leq \frac{E[X]}{a}
+\]
+
+\textbf{Running Example}
+
+\[
+X \sim \text{Binomial}(n, \tfrac{1}{2}), \quad E[X] = \frac{n}{2}
+\]
+
+\[
+P\left(X \geq \frac{3n}{4}\right) \leq \frac{n/2}{3n/4} = \frac{2}{3}
+\]
+
+\textbf{Observation}
+\begin{itemize}
+\item Does not involve $n$
+\item Weak bound
+\end{itemize}
+
+\textbf{Real-Life Example}
+
+\[
+P(X \geq 50000) \leq \frac{10000}{50000} = 0.2
+\]
+
+\section*{6. Chebyshev’s Inequality}
+
+\textbf{Key Idea}
+\begin{itemize}
+\item Uses mean and variance
+\item Controls deviation from mean
+\end{itemize}
+
+\textbf{Statement}
+\[
+P(|X - \mu| \geq a) \leq \frac{\text{Var}(X)}{a^2}
+\]
+
+\textbf{Proof Idea}
+
+Apply Markov to $(X-\mu)^2$:
+\[
+P((X-\mu)^2 \geq a^2) \leq \frac{E[(X-\mu)^2]}{a^2}
+\]
+
+\[
+= \frac{\text{Var}(X)}{a^2}
+\]
+
+\textbf{Running Example}
+
+\[
+\mu = \frac{n}{2}, \quad \text{Var}(X) = \frac{n}{4}
+\]
+
+\[
+P\left(X \geq \frac{3n}{4}\right)
+\leq P\left(|X - \mu| \geq \frac{n}{4}\right)
+\leq \frac{n/4}{(n/4)^2} = \frac{4}{n}
+\]
+
+\textbf{Key Insight}
+\begin{itemize}
+\item Bound decreases as $n$ increases
+\item Better than Markov
+\end{itemize}
+
+\section*{7. Chernoff Bound}
+
+\textbf{Core Transformation}
+
+\[
+P(X \geq a) = P(e^{tX} \geq e^{ta})
+\]
+
+Apply Markov:
+\[
+P(X \geq a) \leq \frac{E[e^{tX}]}{e^{ta}}
+\]
+
+\textbf{Final Form}
+
+\[
+P(X \geq a) \leq \min_{t>0} \left\{ \frac{E[e^{tX}]}{e^{ta}} \right\}
+\]
+
+\textbf{Key Insight}
+\begin{itemize}
+\item Holds for all $t$
+\item Choose best $t$
+\item Stronger bound (exponential decay)
+\end{itemize}
+
+\section*{8. Chernoff Bound (Lower Tail)}
+
+\[
+P(X \leq a) \leq \min_{t<0} \left\{ \frac{E[e^{tX}]}{e^{ta}} \right\}
+\]
+
+\section*{9. Chernoff Bound for Poisson}
+
+\[
+E[e^{tX}] = \sum_{i=0}^{\infty} e^{ti} e^{-\lambda} \frac{\lambda^i}{i!}
+\]
+
+\[
+= e^{-\lambda} \sum_{i=0}^{\infty} \frac{(\lambda e^t)^i}{i!}
+\]
+
+\[
+= e^{\lambda(e^t - 1)}
+\]
+
+
+\end{document}
