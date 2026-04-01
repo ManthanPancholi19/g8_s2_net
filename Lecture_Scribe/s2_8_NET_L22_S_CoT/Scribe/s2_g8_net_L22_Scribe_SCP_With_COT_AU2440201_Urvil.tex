@@ -1,0 +1,81 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{setspace}
+\setstretch{1.3}
+
+\begin{document}
+
+\title{Lecture-22: Lecture Scribe}
+\author{}
+\date{}
+\maketitle
+
+\section*{Summary}
+
+The lecture presents a case study focusing on the problem of predicting the worst-case demand on a server. The content is minimal and consists of a guiding question without detailed explanation, derivation, or examples. The emphasis is on recognizing the importance of analyzing extreme scenarios in system performance.
+
+The slide does not provide explicit methodologies but implies that probabilistic or analytical techniques may be required to estimate worst-case behavior. The problem remains open-ended and conceptual in nature.
+
+\section*{Learning Outcomes}
+
+\begin{itemize}
+    \item Identify the importance of worst-case demand prediction in server systems.
+    \item Recognize that extreme scenarios must be considered in system design.
+    \item Understand that such problems may require probabilistic analysis tools.
+    \item Develop awareness of bounds that help estimate worst-case behavior.
+\end{itemize}
+
+\section*{Probabilistic Bounds}
+
+To analyze worst-case demand, probabilistic bounds can be used to estimate the likelihood that a random variable deviates significantly from its expected value.
+
+\subsection*{Chebyshev's Bound}
+
+\textbf{Statement:}
+
+For a random variable $X$ with expected value $\mathbb{E}[X] = \mu$ and variance $\mathrm{Var}(X) = \sigma^2$,
+
+\[
+P(|X - \mu| \geq k\sigma) \leq \frac{1}{k^2}, \quad k > 0
+\]
+
+\textbf{Interpretation:}
+
+This bound provides an upper limit on the probability that $X$ deviates from its mean by more than $k$ standard deviations.
+
+\subsection*{Limitations of Chebyshev's Bound}
+
+\begin{itemize}
+    \item The bound is generally loose and may overestimate the probability.
+    \item It applies to all distributions with finite variance, without using distribution-specific properties.
+    \item It does not provide tight estimates for rare events.
+\end{itemize}
+
+\subsection*{Chernoff Bound}
+
+\textbf{Statement (General Form):}
+
+For a random variable $X$,
+
+\[
+P(X \geq a) \leq \inf_{t > 0} \frac{\mathbb{E}[e^{tX}]}{e^{ta}}
+\]
+
+\textbf{Interpretation:}
+
+Chernoff bounds provide exponentially decreasing bounds on tail probabilities, making them useful for estimating the probability of large deviations.
+
+\subsection*{Limitations of Chernoff Bound}
+
+\begin{itemize}
+    \item Requires stronger assumptions about the random variable (e.g., independence or boundedness).
+    \item Computation may involve optimization over a parameter $t$.
+    \item Not applicable to all types of distributions.
+\end{itemize}
+
+\section*{Conclusion}
+
+The lecture introduces a case study on predicting worst-case server demand. While the slide itself contains minimal content, probabilistic bounds such as Chebyshev's and Chernoff bounds are relevant tools for analyzing deviations and estimating extreme scenarios. Each bound has its own assumptions and limitations, affecting its applicability.
+
+\end{document}
