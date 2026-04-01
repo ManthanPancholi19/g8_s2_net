@@ -1,0 +1,102 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{hyperref}
+
+% Custom style for "Insight" or "Takeaway" boxes
+\newmdenv[
+    linecolor=blue!20,
+    backgroundcolor=blue!5,
+    linewidth=2pt,
+    roundcorner=5pt,
+    innertopmargin=10pt,
+    innerbottommargin=10pt,
+    innerleftmargin=10pt,
+    innerrightmargin=10pt
+]{insightbox}
+
+\title{\textbf{Lecture 22: Tail Bounds \& Jensen’s Inequality}}
+\author{Scribe Notes for Exam Prep}
+\date{April 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Markov Inequality (Foundation)}
+\textbf{Definition:} For a non-negative random variable $X$:
+\[ P(X \ge a) \le \frac{E[X]}{a} \]
+
+\begin{insightbox}
+\textbf{Reasoning:} Markov uses only the expectation (mean). If the mean is small, large values ($\ge a$) must be rare. This provides a general but often loose bound.
+\end{insightbox}
+
+\section{Chebyshev’s Inequality}
+\textbf{Statement:} 
+\[ P(|X - \mu| \ge a) \le \frac{\text{Var}(X)}{a^2} \]
+
+\subsection{Step-by-Step Derivation}
+\begin{enumerate}
+    \item \textbf{Start with deviation:} $P(|X - \mu| \ge a)$
+    \item \textbf{Square both sides:} $P((X - \mu)^2 \ge a^2)$. 
+    \textit{Reason: Squaring converts absolute deviation into a non-negative quantity.}
+    \item \textbf{Apply Markov Inequality} on $(X - \mu)^2$:
+    \[ P((X - \mu)^2 \ge a^2) \le \frac{E[(X - \mu)^2]}{a^2} \]
+    \item \textbf{Recognize Variance:} Since $E[(X - \mu)^2] = \text{Var}(X)$, we get:
+    \[ P(|X - \mu| \ge a) \le \frac{\text{Var}(X)}{a^2} \]
+\end{enumerate}
+
+\section{Real-Life Examples}
+\subsection{Exam Scores}
+Given $\mu = 70$ and $\sigma = 10$. Find the fraction of students scoring $< 40$ or $> 100$.
+\begin{itemize}
+    \item \textbf{Convert to deviation:} $|X - 70| \ge 30$.
+    \item \textbf{Apply Chebyshev:} $P(|X - 70| \ge 30) \le \frac{10^2}{30^2} = \frac{100}{900} = \frac{1}{9}$.
+    \item \textbf{Insight:} At most $1/9$ of students fall into these "tail" ranges.
+\end{itemize}
+
+\subsection{Network Latency}
+Given $E[X] = 50$ and $\text{Var}(X) = 16$. Range: $[30, 70]$.
+\begin{itemize}
+    \item \textbf{Condition:} $X \notin [30,70] \Rightarrow |X - 50| \ge 20$.
+    \item \textbf{Apply Chebyshev:} $P(|X - 50| \ge 20) \le \frac{16}{20^2} = \frac{16}{400} = \frac{1}{25}$ (4\%).
+\end{itemize}
+
+\section{Chernoff Bound}
+\textbf{Progression:} Markov (uses $X$) $\to$ Chebyshev (uses $X^2$) $\to$ Chernoff (uses $e^{tX}$).
+
+\subsection{The Chernoff Trick}
+\begin{enumerate}
+    \item \textbf{Transformation:} $P(X \ge a) = P(e^{tX} \ge e^{ta})$ (Preserves inequality since exponential is monotonic).
+    \item \textbf{Apply Markov:} $P(e^{tX} \ge e^{ta}) \le \frac{E[e^{tX}]}{e^{ta}}$.
+    \item \textbf{Optimization:} To get the tightest bound, we minimize over $t$:
+    \[ P(X \ge a) \le \min_{t > 0} \frac{E[e^{tX}]}{e^{ta}} \]
+\end{enumerate}
+
+\section{Jensen’s Inequality}
+\textbf{Core Principle:} $g(E[X]) \le E[g(X)]$ for a convex function $g$.
+
+\subsection{Convexity Definition}
+A function $g(x)$ is \textbf{convex} if it lies below the secant line connecting two points:
+\[ g(\alpha x_1 + (1-\alpha)x_2) \le \alpha g(x_1) + (1-\alpha) g(x_2) \]
+
+\subsection{Verification Example}
+Let $X = 1$ with $p=0.5$ and $X = 3$ with $p=0.5$. Let $g(x) = x^2$.
+\begin{itemize}
+    \item $E[X] = 2 \implies g(E[X]) = 2^2 = \mathbf{4}$
+    \item $E[g(X)] = 0.5(1^2) + 0.5(3^2) = 0.5(1) + 0.5(9) = \mathbf{5}$
+    \item Result: $4 \le 5$ (\checkmark Jensen verified).
+\end{itemize}
+
+\section*{Key Exam Takeaways}
+\begin{itemize}
+    \item \textbf{Markov:} Weakest, requires only the mean.
+    \item \textbf{Chebyshev:} Stronger, requires mean and variance.
+    \item \textbf{Chernoff:} Strongest/Tightest, uses the Moment Generating Function (MGF).
+    \item \textbf{Jensen:} For convex functions, applying the function \textit{after} the average is always smaller than or equal to applying it \textit{before}.
+\end{itemize}
+
+\end{document}
