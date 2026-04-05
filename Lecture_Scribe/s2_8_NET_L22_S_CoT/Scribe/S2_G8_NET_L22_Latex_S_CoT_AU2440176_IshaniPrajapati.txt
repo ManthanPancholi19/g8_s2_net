@@ -1,0 +1,249 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb}
+
+\title{Lecture 22 Scribe -- Chebyshev's Inequality}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Key Definitions \& Notation}
+
+\subsection{Random Variable and Moments}
+
+\begin{itemize}
+    \item $X$: random variable
+    \item $\mu = E[X]$: mean
+    \item $\text{Var}(X) = E[(X - \mu)^2]$: variance
+    \item $\sigma$: standard deviation, where $\sigma^2 = \text{Var}(X)$
+\end{itemize}
+
+\subsection{Markov’s Inequality}
+
+For a non-negative random variable $X$ and $a > 0$:
+\[
+P(X \geq a) \leq \frac{E[X]}{a}
+\]
+
+\subsection{Chebyshev’s Inequality}
+
+For any random variable $X$ with mean $\mu$:
+\[
+P(|X - \mu| \geq a) \leq \frac{\text{Var}(X)}{a^2}
+\]
+
+\subsection{Equivalent Form Used in Derivation}
+
+\[
+P(|X - \mu| \geq a) = P((X - \mu)^2 \geq a^2)
+\]
+
+\subsection{Tail Event}
+
+\[
+|X - \mu| \geq a
+\]
+
+\subsection{Exponential Transformation}
+
+\[
+P(X \geq a) = P(e^{tX} \geq e^{ta})
+\]
+
+\section{Core Concepts \& Logical Development}
+
+\subsection{Idea: Using Mean and Variance}
+
+\begin{itemize}
+    \item Mean and variance control deviation from mean
+    \item Variance measures spread
+\end{itemize}
+
+\subsection{From Markov to Chebyshev}
+
+\begin{itemize}
+    \item Markov bounds using $X$
+    \item Chebyshev bounds using $(X - \mu)^2$
+\end{itemize}
+
+\subsection{Conceptual Progression}
+
+\begin{itemize}
+    \item Markov $\rightarrow$ Chebyshev $\rightarrow$ Chernoff
+\end{itemize}
+
+\subsection{Key Observations}
+
+\begin{itemize}
+    \item Tail = values far from mean
+    \item Squaring ensures non-negativity
+    \item Apply Markov to squared deviation
+\end{itemize}
+
+\subsection{Conditions of Validity}
+
+\begin{itemize}
+    \item Markov requires non-negative RV
+    \item $(X - \mu)^2 \geq 0$
+\end{itemize}
+
+\section{Derivation of Chebyshev’s Inequality}
+
+\subsection*{Step 1}
+
+\[
+P(|X - \mu| \geq a)
+\]
+
+\subsection*{Step 2}
+
+\[
+P(|X - \mu| \geq a) = P((X - \mu)^2 \geq a^2)
+\]
+
+\subsection*{Step 3}
+
+Let:
+\[
+Y = (X - \mu)^2
+\]
+
+\[
+P(Y \geq a^2) \leq \frac{E[Y]}{a^2}
+\]
+
+\subsection*{Step 4}
+
+\[
+E[(X - \mu)^2] = \text{Var}(X)
+\]
+
+\subsection*{Final Result}
+
+\[
+P(|X - \mu| \geq a) \leq \frac{\text{Var}(X)}{a^2}
+\]
+
+\section{Worked Examples}
+
+\subsection{Example 1: Coin Flips}
+
+\begin{itemize}
+    \item $X \sim \text{Binomial}(n, \tfrac{1}{2})$
+    \item $\mu = \frac{n}{2}$
+\end{itemize}
+
+\[
+P\left(X \geq \frac{3n}{4}\right)
+\]
+
+\subsection{Example 2: Exam Scores}
+
+\begin{itemize}
+    \item $\mu = 70$, $\sigma = 10$, $\sigma^2 = 100$
+\end{itemize}
+
+\[
+|X - 70| \geq 30
+\]
+
+\[
+P(|X - 70| \geq 30) \leq \frac{100}{30^2} = \frac{1}{9}
+\]
+
+\subsection{Example 3}
+
+\begin{itemize}
+    \item $\mu = 70$, $\sigma^2 = 25$
+\end{itemize}
+
+\[
+|X - 70| \geq 20
+\]
+
+\[
+P(|X - 70| \geq 20) \leq \frac{25}{400} = \frac{1}{16}
+\]
+
+\subsection{Example 4: Network Latency}
+
+\begin{itemize}
+    \item $E[X] = 50$, $\text{Var}(X) = 16$
+\end{itemize}
+
+\[
+|X - 50| \geq 20
+\]
+
+\[
+P(|X - 50| \geq 20) \leq \frac{16}{400} = \frac{1}{25}
+\]
+
+\subsection{Example 5: Manufacturing}
+
+\begin{itemize}
+    \item $\mu = 100$
+\end{itemize}
+
+\[
+|X - \mu| \geq 6
+\]
+
+\[
+P(|X - \mu| \geq 6) \leq \frac{\sigma^2}{36}
+\]
+
+\section{Logical Dependencies}
+
+\begin{enumerate}
+    \item Mean and variance
+    \item Markov’s inequality
+    \item Transformation $(X - \mu)^2$
+    \item Apply Markov
+    \item Tail probability
+\end{enumerate}
+
+\section{Exponential Tail Bound Concept}
+
+\[
+P(X \geq a) = P(e^{tX} \geq e^{ta})
+\]
+
+\begin{itemize}
+    \item Exponential grows fast
+    \item Amplifies tail events
+    \item Leads to tighter bounds
+\end{itemize}
+
+\section{Exam-Focused Summary}
+
+\subsection{Formulas}
+
+\[
+P(X \geq a) \leq \frac{E[X]}{a}
+\]
+
+\[
+P(|X - \mu| \geq a) \leq \frac{\text{Var}(X)}{a^2}
+\]
+
+\subsection{Procedure}
+
+\begin{enumerate}
+    \item Identify $\mu$, $\sigma^2$
+    \item Convert to $|X - \mu| \geq a$
+    \item Apply Chebyshev
+    \item Substitute values
+    \item Simplify
+\end{enumerate}
+
+\subsection{Key Results}
+
+\begin{itemize}
+    \item $P(|X - 70| \geq 30) \leq \frac{1}{9}$
+    \item $P(X \geq 90) \leq \frac{1}{16}$
+    \item $P(|X - 50| \geq 20) \leq \frac{1}{25}$
+\end{itemize}
+
+\end{document}
