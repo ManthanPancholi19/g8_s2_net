@@ -1,0 +1,8 @@
+Task: Generate a formal Lecture Scribe for "Lecture 26" for the course CSE 400: Fundamentals of Probability in Computing. This document is intended as a high-quality, exam-ready reference for students preparing for a closed-notes exam.
+Reasoning Instructions (Chain-of-Thought):
+While writing the scribe, you must reason step-by-step through all definitions, assumptions, proofs, and example solutions exactly as they appear in the provided context for Lecture 26. Make the logical flow between concepts explicit so that a student can follow the reasoning during revision. Explain definitions and assumptions explicitly within the scribe text.
+Scope and Faithfulness:
+Use only the provided lecture and textbook materials. Include proofs, derivations, and worked examples only if they are present in the provided context. Do not introduce outside intuition, new examples, or information not discussed in the lecture. Maintain a formal, academic tone.
+Structure:
+Organize the scribe using clear section headings. Ensure all notation and symbols are preserved accurately from the lecture slides. The output must be a faithful reconstruction of what was taught.
+Purpose: "If I study only this document, can I reliably revise what was taught in Lecture 26?"

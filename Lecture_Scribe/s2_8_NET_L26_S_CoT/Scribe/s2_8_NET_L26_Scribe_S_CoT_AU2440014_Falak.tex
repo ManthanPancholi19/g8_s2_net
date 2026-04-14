@@ -1,0 +1,291 @@
+\documentclass{article}
+
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\begin{document}
+
+\title{Lecture Scribe: CSE 400 - Fundamentals of Probability in Computing}
+\author{Instructor: Dhaval Patel, PhD}
+\date{14 April, 2026}
+
+\maketitle
+
+\section*{Lecture 26: Stochastic Processes (Part 1)}
+
+\section{Introduction to Stochastic Processes}
+
+[cite\_start]A \textbf{stochastic process} $X(\zeta, t)$ is defined as an entire collection of waveforms or functions over time that are dependent on the outcome of a random experiment[cite: 27, 34]. [cite\_start]The random output is heavily influenced by the specific experiment conducted[cite: 35].
+
+\subsection{Core Interpretations}
+
+[cite\_start]To understand the nature of a stochastic process, we use two primary interpretations[cite: 850]:
+
+\begin{enumerate}
+\item [cite\_start]\textbf{Fixed Time ($t$):} If we ``freeze'' the process at a specific time $t = t_1$, the output $X(\zeta, t_1)$ evaluates to a single \textbf{Random Variable (RV)}[cite: 110, 111]. [cite\_start]By evaluating at multiple instances ($t_1, t_2$), we acquire multiple dependent random variables $(X(t_1), X(t_2))$[cite: 120].
+
+\item [cite\_start]\textbf{Fixed Outcome ($\zeta$):} A specific measured waveform resulting from the experiment is called a \textbf{Realization} of the process[cite: 103].
+\end{enumerate}
+
+\section{Characterization of Stochastic Processes}
+
+[cite\_start]A process is fully described by its \textbf{Probability Density Functions (PDF)} across various orders[cite: 126, 152]:
+
+\begin{itemize}
+
+\item [cite\_start]\textbf{1st Order Characterization:} Describes the RV at a single time $t_1$: $f_{X_1}(x, t_1)$[cite: 132, 133].
+
+\item [cite\_start]\textbf{2nd Order Characterization:} Describes the joint probability across two times $t_1$ and $t_2$: $f_{X_1X_2}(x_1, x_2, t_1, t_2)$[cite: 141, 142].
+
+\item [cite\_start]\textbf{nth Order Characterization:} Provides a complete statistical description: $f_{X_1...X_n}(x_1, ..., x_n, t_1, ..., t_n)$[cite: 152, 153].
+
+\end{itemize}
+
+\section{Statistical Moments and Mathematical Tools}
+
+\subsection{Mean Function}
+
+[cite\_start]The mean $\mu_X(t)$ is the expected value of the random variable at time $t$[cite: 160, 161].
+
+\begin{itemize}
+
+\item [cite\_start]\textbf{Formula:}
+
+\[
+\mu_X(t) = \int_{-\infty}^{\infty} x \cdot f_X(x, t)\, dx
+\]
+
+[cite: 171].
+
+\item [cite\_start]\textbf{Note:} Generally, the mean changes as a function of time[cite: 172].
+
+\end{itemize}
+
+\subsection{Autocorrelation Function}
+
+[cite\_start]The autocorrelation function $R_{XX}(t_1, t_2)$ measures the relationship between the process sampled at two different times[cite: 185, 186].
+
+\begin{itemize}
+
+\item [cite\_start]\textbf{Definition:}
+
+\[
+R_{XX}(t_1, t_2) = E[X(t_1)X^*(t_2)]
+\]
+
+[cite: 187, 195].
+
+\item [cite\_start]\textbf{Calculation:}
+
+\[
+\int_{-\infty}^{\infty}
+\int_{-\infty}^{\infty}
+x_1 x_2
+\cdot
+f_{X_1X_2}(x_1, x_2, t_1, t_2)
+\, dx_1 dx_2
+\]
+
+[cite: 196, 197].
+
+\end{itemize}
+
+\textbf{Properties of Autocorrelation:}
+
+\begin{enumerate}
+
+\item [cite\_start]\textbf{Conjugate Symmetry:}
+
+\[
+R_{XX}(t_1, t_2) = R_{XX}^*(t_2, t_1)
+\]
+
+[cite: 210, 218].
+
+\item [cite\_start]\textbf{Positive Definiteness:}
+
+The autocorrelation function forms a positive definite matrix[cite: 241]. [cite\_start]For any non-zero vector $a$, $a^H Ra > 0$[cite: 298, 299].
+
+\end{enumerate}
+
+\subsection{Autocovariance Function}
+
+[cite\_start]Measures the relationship between process deviations from the mean at times $t_1$ and $t_2$[cite: 253, 261].
+
+\begin{itemize}
+
+\item [cite\_start]\textbf{Definition:}
+
+\[
+C_{XX}(t_1, t_2)
+=
+E[
+(X(t_1) - \mu_X(t_1))
+(X^*(t_2) - \mu_X^*(t_2))
+]
+\]
+
+[cite: 254, 262].
+
+\item [cite\_start]\textbf{Simplified Form:}
+
+\[
+C_{XX}(t_1, t_2)
+=
+R_{XX}(t_1, t_2)
+-
+\mu_X(t_1)\mu_X(t_2)
+\]
+
+[cite: 655, 663].
+
+\end{itemize}
+
+\section{Stationary Stochastic Processes}
+
+[cite\_start]Stationarity refers to the \textbf{time invariance} of statistical properties[cite: 854].
+
+\subsection{Strict Sense Stationary (SSS)}
+
+[cite\_start]A process is SSS if its statistical properties are invariant under any time shift $\tau$[cite: 457, 856].
+
+\begin{itemize}
+
+\item [cite\_start]\textbf{Mathematical Condition:}
+
+\[
+f_X(x_1, ..., x_n; t_1, ..., t_n)
+=
+f_X(x_1, ..., x_n; t_1 + \tau, ..., t_n + \tau)
+\]
+
+[cite: 858].
+
+\item [cite\_start]\textbf{Implications:}
+
+The mean $\mu_X$ must be constant, and the autocorrelation $R_{XX}(t_1, t_2)$ depends only on the time difference (lag) $\tau = t_1 - t_2$[cite: 459, 478].
+
+\end{itemize}
+
+\subsection{Wide Sense Stationary (WSS)}
+
+[cite\_start]Since SSS is difficult to verify, the weaker notion of WSS is often used[cite: 483, 489]. [cite\_start]A process is WSS if and only if[cite: 484, 490]:
+
+\begin{enumerate}
+
+\item [cite\_start]\textbf{Constant Mean:}
+
+$E[X(t)] = \mu_X = \text{constant}$[cite: 492, 500].
+
+\item [cite\_start]\textbf{Lag-Dependent Autocorrelation:}
+
+$E[X(t_1)X^*(t_2)] = R_{XX}(\tau)$, where $\tau = t_1 - t_2$[cite: 501, 502].
+
+\end{enumerate}
+
+[cite\_start]\textbf{Relationship:} Every SSS process is WSS, but not every WSS process is SSS ($SSS \Rightarrow WSS$)[cite: 509, 510, 519].
+
+\begin{itemize}
+
+\item [cite\_start]\textbf{Gaussian Exception:}
+
+If a process is both Gaussian and WSS, then it is also SSS ($WSS \Rightarrow SSS$) because the Gaussian distribution is fully defined by its mean and covariance[cite: 521, 523, 524].
+
+\end{itemize}
+
+\section{Ergodic Process}
+
+[cite\_start]A process is \textbf{Ergodic} if its \textbf{time averages} are equal to its corresponding \textbf{ensemble averages}[cite: 680, 688].
+
+\begin{itemize}
+
+\item [cite\_start]This is critical because in practice, we often have access to only a single realization $x(t)$ rather than the full ensemble[cite: 682, 692].
+
+\item [cite\_start]\textbf{Ergodicity in Mean:}
+
+$\langle x(t) \rangle = E[X(t)]$[cite: 740, 747].
+
+\item [cite\_start]\textbf{Ergodicity in Autocorrelation:}
+
+$\langle x(t)x(t+\tau) \rangle = E[X(t)X(t+\tau)]$[cite: 749].
+
+\end{itemize}
+
+\section{Worked Examples}
+
+\subsection{Example: Verifying WSS}
+
+[cite\_start]\textbf{Process:}
+
+$X(t) = a \cos(\omega_0 t + \Phi)$, where $a$ and $\omega_0$ are constants and $\Phi \sim U[0, 2\pi]$[cite: 760, 768, 770].
+
+\textbf{Step 1: Mean}
+
+[cite\_start]
+
+\[
+E[X(t)] = E[a \cos(\omega_0 t + \Phi)]
+\]
+
+[cite: 782].
+
+[cite\_start]Expanding via cosine addition:
+
+$a \cos(\omega_0 t) E[\cos(\Phi)] - a \sin(\omega_0 t) E[\sin(\Phi)]$[cite: 802].
+
+[cite\_start]Since $\Phi$ is uniform over $[0, 2\pi]$, $E[\cos(\Phi)] = 0$ and $E[\sin(\Phi)] = 0$[cite: 811, 821].
+
+[cite\_start]\textbf{Result:}
+
+$\mu_X(t) = 0$ (constant)[cite: 822].
+
+\textbf{Step 2: Autocorrelation}
+
+[cite\_start]
+
+\[
+R_{XX}(t_1, t_2)
+=
+E[
+a^2
+\cos(\omega_0 t_1 + \Phi)
+\cos(\omega_0 t_2 + \Phi)
+]
+\]
+
+[cite: 838].
+
+[cite\_start]Using the identity $2\cos(A)\cos(B) = \cos(A-B) + \cos(A+B)$[cite: 839]:
+
+[cite\_start]
+
+\[
+R_{XX}(t_1, t_2)
+=
+\frac{a^2}{2}
+E[
+\cos(\omega_0(t_1 - t_2))
++
+\cos(\omega_0(t_1 + t_2) + 2\Phi)
+]
+\]
+
+[cite: 841].
+
+[cite\_start]The second term $E[\cos(\dots + 2\Phi)] = 0$[cite: 847].
+
+[cite\_start]\textbf{Result:}
+
+\[
+R_{XX}(t_1, t_2)
+=
+\frac{a^2}{2}
+\cos(\omega_0(t_1 - t_2))
+\]
+
+[cite: 848].
+
+[cite\_start]Since the result depends only on the time difference, the process is \textbf{WSS}[cite: 849].
+
+\end{document}
